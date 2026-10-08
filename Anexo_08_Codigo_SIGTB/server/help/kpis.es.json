@@ -1,0 +1,34 @@
+{
+  "module": "kpis",
+  "version": "2026-08-28",
+  "title": "Guía rápida — KPIs de ingeniería clínica",
+  "what": "Aquí sigues mes a mes cómo va el proceso: disponibilidad, mantenimiento y costos. El semáforo te dice si vas bien, si hay que vigilar o si hay que actuar.",
+  "can_do": [
+    "Cargar empresa y año",
+    "Completar el mes (o traer conteos del inventario)",
+    "Ver el semáforo y el resumen del año",
+    "Anotar acciones y exportar Excel"
+  ],
+  "steps": [
+    "Elige empresa y año y pulsa Cargar.",
+    "Completa el mes (o pulsa Aplicar inventario al mes) y guarda.",
+    "Revisa los colores: rojo pide una acción en el plan (quién, qué y para cuándo). Luego exporta Excel si lo necesitas."
+  ],
+  "common_errors": [
+    {"error": "El semáforo no cambia", "fix": "Guarda el mes y pulsa Cargar otra vez."},
+    {"error": "Inventario no se aplica", "fix": "Confirma la empresa y que el inventario tenga equipos."},
+    {"error": "No te deja editar", "fix": "Puedes ver, pero no escribir. Pídele acceso al ADMIN."}
+  ],
+  "examples": [
+    {"type": "plantilla", "label": "Plantilla de ejemplo (Excel)", "href": "/api/help/kpis/examples/plantilla.xlsx"},
+    {"type": "informe", "label": "Informe de ejemplo (PDF)", "href": "/api/help/kpis/examples/ejemplo.pdf"}
+  ],
+  "images": ["kpis_entrada.svg", "kpis_analisis.svg"],
+  "tips": [
+    "Cierra el mes con un comentario, no solo con el color.",
+    "Verde cumple la meta, amarillo vigila, rojo hay que actuar.",
+    "Actualiza metas en Parámetros antes de comparar el mes.",
+    "Las columnas de inventario se sugieren solas; el resto las carga ingeniería."
+  ],
+  "contact": "Si no ves tu sede o faltan personas, escríbele al ADMIN de tu organización."
+}

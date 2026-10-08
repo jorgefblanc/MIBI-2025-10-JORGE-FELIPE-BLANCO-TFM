@@ -1,0 +1,32 @@
+{
+  "module": "suficiencia",
+  "version": "2026-08-26-b",
+  "title": "Guía rápida — Suficiencia de equipos",
+  "what": "Aquí ves si hay suficientes equipos para la demanda del servicio. Te sirve para decidir si pedir más, mover alguno o quedarte tranquilo.",
+  "can_do": [
+    "Elegir empresa, sede y servicio",
+    "Ver qué equipos están realmente disponibles",
+    "Leer el semáforo (bien / vigilar / faltan)",
+    "Exportar un Excel del análisis"
+  ],
+  "steps": [
+    "Arriba, elige empresa, sede y servicio.",
+    "Revisa los datos del servicio (ocupación o camas) y pulsa Actualizar.",
+    "Mira la tabla de evaluación: verde está bien, amarillo hay que vigilar, rojo faltan equipos."
+  ],
+  "common_errors": [
+    {"error": "No salen equipos", "fix": "Cárgalos en Inventario para ese servicio y pulsa Actualizar."},
+    {"error": "Todo aparece como Revisar", "fix": "Falta un dato del servicio. Complétalo y recálcula."},
+    {"error": "No te deja guardar", "fix": "Puedes ver, pero no editar. Pídele el permiso al ADMIN."}
+  ],
+  "examples": [
+    {"type": "plantilla", "label": "Plantilla de ejemplo (Excel)", "href": "/api/help/suficiencia/examples/plantilla.xlsx"},
+    {"type": "informe", "label": "Informe de ejemplo (PDF)", "href": "/api/help/suficiencia/examples/ejemplo.pdf"}
+  ],
+  "images": ["suficiencia_entrada.svg", "suficiencia_analisis.svg"],
+  "tips": [
+    "Un equipo en mantenimiento no cuenta como disponible.",
+    "Si sale Revisar, deja una observación corta."
+  ],
+  "contact": "Si no ves tu sede o faltan personas, escríbele al ADMIN de tu organización."
+}

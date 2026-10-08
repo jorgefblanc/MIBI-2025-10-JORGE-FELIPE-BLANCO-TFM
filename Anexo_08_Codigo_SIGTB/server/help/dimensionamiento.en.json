@@ -1,0 +1,32 @@
+{
+  "module": "dimensionamiento",
+  "version": "2026-08-26-b",
+  "title": "Quick guide — Staffing",
+  "what": "Here you see how many clinical engineers the site needs for the year's work, compared with the people already assigned.",
+  "can_do": [
+    "Load the site and see the hours",
+    "Tell owned devices from loaner or leasing",
+    "See how many engineers you need",
+    "Export CSV, Excel or PDF"
+  ],
+  "steps": [
+    "Choose company and site, then click Load site.",
+    "Check the hours (maintenance, calibration and other tasks).",
+    "Compare engineers needed with site staff and export the report if it looks right."
+  ],
+  "common_errors": [
+    {"error": "Everything is zero", "fix": "The site has no inventory. Load it in Inventory, then load the site again."},
+    {"error": "Staff count is zero", "fix": "Nobody is assigned to that site. Ask ADMIN to assign people."},
+    {"error": "A loaner adds no maintenance hours", "fix": "That is expected: a third party does that maintenance."}
+  ],
+  "examples": [
+    {"type": "plantilla", "label": "Sample template (Excel)", "href": "/api/help/dimensionamiento/examples/plantilla.xlsx"},
+    {"type": "informe", "label": "Sample report (PDF)", "href": "/api/help/dimensionamiento/examples/ejemplo.pdf"}
+  ],
+  "images": ["dimensionamiento_entrada.svg", "dimensionamiento_analisis.svg"],
+  "tips": [
+    "Run this per site; do not mix companies.",
+    "If criticality is High, say whether it is the only device in the area."
+  ],
+  "contact": "If you cannot see your site or people are missing, write to your organisation ADMIN."
+}

@@ -1,0 +1,32 @@
+{
+  "module": "suficiencia",
+  "version": "2026-08-26-b",
+  "title": "Quick guide — Equipment sufficiency",
+  "what": "Here you see whether the service has enough devices for demand. Use it to decide if you need more, should move units, or can leave things as they are.",
+  "can_do": [
+    "Pick company, site and service",
+    "See which devices are actually available",
+    "Read the traffic light (ok / watch / short)",
+    "Export an Excel of the analysis"
+  ],
+  "steps": [
+    "At the top, choose company, site and service.",
+    "Check the service data (occupancy or beds) and click Refresh.",
+    "Read the evaluation table: green is fine, yellow needs attention, red means you are short."
+  ],
+  "common_errors": [
+    {"error": "No devices in the table", "fix": "Load them in Inventory for that service, then click Refresh."},
+    {"error": "Everything says Review", "fix": "A service field is missing. Fill it in and recalculate."},
+    {"error": "You cannot save", "fix": "You can view but not edit. Ask ADMIN for access."}
+  ],
+  "examples": [
+    {"type": "plantilla", "label": "Sample template (Excel)", "href": "/api/help/suficiencia/examples/plantilla.xlsx"},
+    {"type": "informe", "label": "Sample report (PDF)", "href": "/api/help/suficiencia/examples/ejemplo.pdf"}
+  ],
+  "images": ["suficiencia_entrada.svg", "suficiencia_analisis.svg"],
+  "tips": [
+    "A device in maintenance does not count as available.",
+    "If the result is Review, leave a short comment."
+  ],
+  "contact": "If you cannot see your site or people are missing, write to your organisation ADMIN."
+}

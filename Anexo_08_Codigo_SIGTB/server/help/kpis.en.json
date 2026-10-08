@@ -1,0 +1,34 @@
+{
+  "module": "kpis",
+  "version": "2026-08-28",
+  "title": "Quick guide — Clinical engineering KPIs",
+  "what": "Here you follow the process month by month: availability, maintenance and costs. The traffic light tells you if you are on track, should watch, or must act.",
+  "can_do": [
+    "Load company and year",
+    "Fill in the month (or pull counts from inventory)",
+    "See the traffic light and the year summary",
+    "Log actions and export Excel"
+  ],
+  "steps": [
+    "Choose company and year, then click Load.",
+    "Complete the month (or click Apply inventory to month) and save.",
+    "Read the colours: red needs an action in the plan (who, what, by when). Export Excel if you need it."
+  ],
+  "common_errors": [
+    {"error": "The light does not change", "fix": "Save the month and click Load again."},
+    {"error": "Inventory does not apply", "fix": "Check the company and that inventory has devices."},
+    {"error": "You cannot edit", "fix": "You can view but not type. Ask ADMIN for access."}
+  ],
+  "examples": [
+    {"type": "plantilla", "label": "Sample template (Excel)", "href": "/api/help/kpis/examples/plantilla.xlsx"},
+    {"type": "informe", "label": "Sample report (PDF)", "href": "/api/help/kpis/examples/ejemplo.pdf"}
+  ],
+  "images": ["kpis_entrada.svg", "kpis_analisis.svg"],
+  "tips": [
+    "Close the month with a comment, not colour alone.",
+    "Green meets the target, yellow watch, red act.",
+    "Update targets in Parameters before comparing the month.",
+    "Inventory columns are suggested for you; engineering fills the rest."
+  ],
+  "contact": "If you cannot see your site or people are missing, write to your organisation ADMIN."
+}

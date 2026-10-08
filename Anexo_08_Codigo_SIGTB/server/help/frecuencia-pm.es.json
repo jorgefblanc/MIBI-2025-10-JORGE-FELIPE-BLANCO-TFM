@@ -1,0 +1,35 @@
+{
+  "module": "frecuencia-pm",
+  "version": "2026-08-28",
+  "title": "Guía rápida — Frecuencia de mantenimiento",
+  "what": "Aquí armas el calendario de mantenimiento preventivo del servicio: cada cuánto se visita cada equipo y en qué meses cae.",
+  "can_do": [
+    "Traer los equipos del inventario",
+    "Calcular la frecuencia y el calendario del año",
+    "Pedir el visto bueno asistencial si aplica",
+    "Bajar el PDF del informe y el del calendario"
+  ],
+  "steps": [
+    "Elige empresa, sede, servicio y el año.",
+    "Pulsa Sincronizar inventario y luego Recalcular.",
+    "Revisa el calendario y, si está listo, descarga los PDF."
+  ],
+  "common_errors": [
+    {"error": "No hay equipos", "fix": "Sincroniza el inventario de ese servicio."},
+    {"error": "El calendario está vacío", "fix": "Pulsa Recalcular GE / cronograma."},
+    {"error": "No te deja editar una fila", "fix": "No tienes permiso de edición. Escríbele al ADMIN."}
+  ],
+  "examples": [
+    {"type": "plantilla", "label": "Plantilla de ejemplo (Excel)", "href": "/api/help/frecuencia-pm/examples/plantilla.xlsx"},
+    {"type": "informe", "label": "Informe de ejemplo (PDF)", "href": "/api/help/frecuencia-pm/examples/ejemplo.pdf"}
+  ],
+  "images": ["frecuencia-pm_entrada.svg", "frecuencia-pm_analisis.svg"],
+  "tips": [
+    "No muevas visitas a mano para “cuadrar” un mes: cambia la frecuencia y recálcula.",
+    "Si el equipo es comodato, el mantenimiento suele hacerlo un tercero.",
+    "En Inventario PM busca por nombre y pagina de 10, 25 o 50 equipos.",
+    "Al marcar Cumplir elige una evidencia de la lista del inventario; no se escribe texto libre.",
+    "La frecuencia definitiva usa TPM = min(TGE, Tfab) si GE≥12; si GE<12 prevalece el fabricante."
+  ],
+  "contact": "Si no ves tu sede o faltan personas, escríbele al ADMIN de tu organización."
+}

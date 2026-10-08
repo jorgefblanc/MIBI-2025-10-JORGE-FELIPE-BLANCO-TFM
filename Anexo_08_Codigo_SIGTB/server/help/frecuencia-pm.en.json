@@ -1,0 +1,35 @@
+{
+  "module": "frecuencia-pm",
+  "version": "2026-08-28",
+  "title": "Quick guide — Preventive maintenance",
+  "what": "Here you build the preventive-maintenance calendar for the service: how often each device is visited and in which months.",
+  "can_do": [
+    "Pull devices from inventory",
+    "Calculate frequency and the year calendar",
+    "Ask for clinical sign-off when needed",
+    "Download the report PDF and the calendar PDF"
+  ],
+  "steps": [
+    "Choose company, site, service and year.",
+    "Click Sync inventory, then Recalculate.",
+    "Check the calendar and download the PDFs when it looks right."
+  ],
+  "common_errors": [
+    {"error": "No devices", "fix": "Sync inventory for that service."},
+    {"error": "The calendar is empty", "fix": "Click Recalculate GE / calendar."},
+    {"error": "You cannot edit a row", "fix": "You do not have edit access. Write to ADMIN."}
+  ],
+  "examples": [
+    {"type": "plantilla", "label": "Sample template (Excel)", "href": "/api/help/frecuencia-pm/examples/plantilla.xlsx"},
+    {"type": "informe", "label": "Sample report (PDF)", "href": "/api/help/frecuencia-pm/examples/ejemplo.pdf"}
+  ],
+  "images": ["frecuencia-pm_entrada.svg", "frecuencia-pm_analisis.svg"],
+  "tips": [
+    "Do not drag visits around to “fit” a month: change the frequency and recalculate.",
+    "On loaner units, maintenance is often done by a third party.",
+    "In PM inventory you can search by name and page 10, 25 or 50 devices.",
+    "When marking Done, pick an inventory evidence option; there is no free-text box.",
+    "If GE≥12, TPM = min(TGE, manufacturer). If GE<12, the manufacturer interval applies when present."
+  ],
+  "contact": "If you cannot see your site or people are missing, write to your organisation ADMIN."
+}

@@ -1,0 +1,32 @@
+{
+  "module": "dimensionamiento",
+  "version": "2026-08-26-b",
+  "title": "Guía rápida — Dimensionamiento de personal",
+  "what": "Aquí calculas cuántos ingenieros clínicos necesita la sede, según el trabajo del año. Comparas ese número con las personas que ya están asignadas.",
+  "can_do": [
+    "Cargar la sede y ver las horas de trabajo",
+    "Separar equipos propios de comodato o leasing",
+    "Ver cuántos ingenieros hacen falta",
+    "Exportar CSV, Excel o PDF"
+  ],
+  "steps": [
+    "Elige empresa y sede y pulsa Cargar sede.",
+    "Revisa las horas (mantenimiento, calibración y otras tareas).",
+    "Compara ingenieros necesarios con el personal de la sede y, si te encaja, exporta el informe."
+  ],
+  "common_errors": [
+    {"error": "Sale todo en cero", "fix": "La sede no tiene inventario. Cárgalo en Inventario y vuelve a cargar la sede."},
+    {"error": "El personal aparece en cero", "fix": "Nadie está asignado a esa sede. Pídele al ADMIN que asigne personas."},
+    {"error": "Un comodato no suma mantenimiento", "fix": "Es normal: ese mantenimiento lo hace un tercero."}
+  ],
+  "examples": [
+    {"type": "plantilla", "label": "Plantilla de ejemplo (Excel)", "href": "/api/help/dimensionamiento/examples/plantilla.xlsx"},
+    {"type": "informe", "label": "Informe de ejemplo (PDF)", "href": "/api/help/dimensionamiento/examples/ejemplo.pdf"}
+  ],
+  "images": ["dimensionamiento_entrada.svg", "dimensionamiento_analisis.svg"],
+  "tips": [
+    "Haz el ejercicio por sede, no mezcles empresas.",
+    "Si la criticidad es Alta, indica si es el único equipo del área."
+  ],
+  "contact": "Si no ves tu sede o faltan personas, escríbele al ADMIN de tu organización."
+}

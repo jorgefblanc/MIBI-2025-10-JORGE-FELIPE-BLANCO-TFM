@@ -1,0 +1,3230 @@
+<!DOCTYPE html>
+<!-- SIGTB: login y dashboard. Lógica en public/js/. -->
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>SIGTB · Sistema Integrado de Gestión de la Tecnología Biomédica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div id="toast-root" class="toast-root" aria-live="polite"></div>
+
+    <div class="page">
+      <aside class="brand-panel" aria-hidden="true">
+        <div class="brand-panel__glow"></div>
+        <div class="brand-panel__content">
+          <p class="brand-mark">SIGTB</p>
+          <h1>Sistema Integrado de Gestión de la Tecnología Biomédica</h1>
+          <p class="brand-credit">Elaborado por Ing. Jorge Felipe Blanco Medina</p>
+        </div>
+      </aside>
+
+      <main class="auth-panel">
+        <section class="auth-card" id="login-section">
+          <button
+            type="button"
+            class="fallos-fab"
+            id="open-reporte-fallos"
+            title="Reporte de fallos"
+            aria-label="Reporte de fallos"
+          >
+            <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M19.4 13.1c.03-.23.05-.47.05-.71s-.02-.48-.05-.71l1.52-1.18a.37.37 0 0 0 .09-.48l-1.44-2.49a.37.37 0 0 0-.48-.16l-1.79.72c-.37-.28-.78-.52-1.22-.7l-.27-1.9A.37.37 0 0 0 15.43 4h-2.86a.37.37 0 0 0-.37.32l-.27 1.9c-.44.18-.85.42-1.22.7l-1.79-.72a.37.37 0 0 0-.48.16L7.0 10.02a.37.37 0 0 0 .09.48l1.52 1.18c-.03.23-.05.47-.05.71s.02.48.05.71L7.09 14.28a.37.37 0 0 0-.09.48l1.44 2.49c.1.17.3.24.48.16l1.79-.72c.37.28.78.52 1.22.7l.27 1.9c.04.18.19.32.37.32h2.86c.18 0 .33-.14.37-.32l.27-1.9c.44-.18.85-.42 1.22-.7l1.79.72c.18.08.38.01.48-.16l1.44-2.49a.37.37 0 0 0-.09-.48l-1.52-1.18zM14 15.1a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2z"
+              />
+              <path fill="currentColor" d="M22.2 16.2 30 30.2H14.4z" />
+              <path fill="#fff" d="M21.7 21.2h1v5h-1zm0 6.2h1v1.2h-1z" />
+            </svg>
+          </button>
+          <header class="auth-header">
+            <p class="eyebrow">Sign In / Login</p>
+            <h2>Acceder al sistema</h2>
+            <p class="subtitle">Ingresa tu correo y contraseña para continuar.</p>
+          </header>
+
+          <form id="login-form" novalidate>
+            <div class="field field--login-email">
+              <label for="login-email">usuario_login (correo)</label>
+              <div class="login-email-wrap">
+                <input
+                  id="login-email"
+                  name="usuario_login"
+                  type="email"
+                  autocomplete="username"
+                  placeholder="nombre@empresa.com"
+                  required
+                  maxlength="254"
+                  aria-autocomplete="list"
+                  aria-controls="login-email-menu"
+                  aria-expanded="false"
+                />
+                <button
+                  type="button"
+                  class="login-email-toggle"
+                  id="login-email-toggle"
+                  aria-label="Ver usuarios guardados"
+                  title="Usuarios guardados"
+                  hidden
+                >
+                  ▾
+                </button>
+                <ul
+                  class="login-email-menu"
+                  id="login-email-menu"
+                  role="listbox"
+                  hidden
+                ></ul>
+              </div>
+              <p class="field-hint">El correo no distingue mayúsculas/minúsculas.</p>
+              <p class="field-error" data-error-for="login-email" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="login-password">password</label>
+              <input
+                id="login-password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                placeholder="••••••••"
+                required
+                maxlength="128"
+              />
+              <p class="field-error" data-error-for="login-password" hidden></p>
+            </div>
+
+            <label class="remember-row" for="login-remember">
+              <input type="checkbox" id="login-remember" name="remember_password" />
+              <span>Guardar contraseña para este usuario (autocomplete al elegir el correo)</span>
+            </label>
+
+            <div class="actions">
+              <button type="submit" class="btn btn-primary" id="login-submit">
+                Iniciar sesión
+              </button>
+            </div>
+            <p class="login-forgot-wrap">
+              <button type="button" class="login-register-link" id="open-forgot">
+                Olvidé contraseña
+              </button>
+            </p>
+            <p class="login-register-prompt">
+              Si no cuenta con usuario,
+              <button type="button" class="login-register-link" id="open-register">
+                Crear usuario
+              </button>
+            </p>
+          </form>
+        </section>
+
+        <section class="welcome-card" id="welcome-section" hidden>
+          <header class="auth-header">
+            <p class="eyebrow">Sesión activa</p>
+            <h2 id="welcome-title">Bienvenido</h2>
+            <p class="subtitle" id="welcome-subtitle"></p>
+          </header>
+          <dl class="user-meta" id="user-meta"></dl>
+          <button type="button" class="btn btn-ghost" id="logout-btn">Cerrar sesión</button>
+        </section>
+      </main>
+    </div>
+
+    <section class="dashboard" id="dashboard" hidden>
+      <header class="ops-topbar">
+        <div class="ops-topbar__left">
+          <button
+            type="button"
+            class="ops-nav-toggle"
+            id="dash-nav-toggle"
+            aria-controls="ops-sidebar"
+            aria-expanded="false"
+            aria-label="Abrir menú de módulos"
+          >
+            <span class="ops-nav-toggle__bars" aria-hidden="true"></span>
+            <span class="ops-nav-toggle__text">Módulos</span>
+          </button>
+          <div class="ops-topbar__identity">
+          <p class="ops-welcome" id="dash-welcome">¡Bienvenido!</p>
+          <p class="ops-meta">
+            <span id="dash-datetime"></span>
+            <span class="ops-meta__sep" aria-hidden="true">·</span>
+            <span id="dash-email"></span>
+          </p>
+          <p class="field-hint" id="dash-pending" hidden>
+            Tu cargo y/o empresa están pendientes de asignación.
+          </p>
+          </div>
+        </div>
+        <div class="ops-topbar__right">
+          <p class="ops-empresa" id="dash-empresa" hidden></p>
+          <button
+            type="button"
+            class="fallos-fab fallos-fab--bar"
+            id="dash-reporte-fallos"
+            title="Reporte de fallos"
+            aria-label="Reporte de fallos"
+          >
+            <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M19.4 13.1c.03-.23.05-.47.05-.71s-.02-.48-.05-.71l1.52-1.18a.37.37 0 0 0 .09-.48l-1.44-2.49a.37.37 0 0 0-.48-.16l-1.79.72c-.37-.28-.78-.52-1.22-.7l-.27-1.9A.37.37 0 0 0 15.43 4h-2.86a.37.37 0 0 0-.37.32l-.27 1.9c-.44.18-.85.42-1.22.7l-1.79-.72a.37.37 0 0 0-.48.16L7.0 10.02a.37.37 0 0 0 .09.48l1.52 1.18c-.03.23-.05.47-.05.71s.02.48.05.71L7.09 14.28a.37.37 0 0 0-.09.48l1.44 2.49c.1.17.3.24.48.16l1.79-.72c.37.28.78.52 1.22.7l.27 1.9c.04.18.19.32.37.32h2.86c.18 0 .33-.14.37-.32l.27-1.9c.44-.18.85-.42 1.22-.7l1.79.72c.18.08.38.01.48-.16l1.44-2.49a.37.37 0 0 0-.09-.48l-1.52-1.18zM14 15.1a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2z"
+              />
+              <path fill="currentColor" d="M22.2 16.2 30 30.2H14.4z" />
+              <path fill="#fff" d="M21.7 21.2h1v5h-1zm0 6.2h1v1.2h-1z" />
+            </svg>
+          </button>
+          <button type="button" class="ops-inbox-btn" id="dash-inbox" title="Bandeja de entrada" aria-label="Bandeja de entrada">
+            <span class="ops-inbox-btn__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 7h16v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7z" />
+                <path d="M4 7l8 6 8-6" />
+                <path d="M9 3h6v4H9z" />
+              </svg>
+            </span>
+            <span class="ops-inbox-btn__label">Bandeja</span>
+            <span class="ops-inbox-btn__badge" id="dash-inbox-badge" hidden>0</span>
+          </button>
+          <button type="button" class="btn btn-primary" id="dash-settings">Ajustes<span class="ops-btn-extra"> de Usuario</span></button>
+          <button type="button" class="btn btn-ghost" id="dash-logout">Cerrar<span class="ops-btn-extra"> sesión</span></button>
+        </div>
+      </header>
+
+      <div class="ops-nav-overlay" id="ops-nav-overlay" hidden></div>
+      <div class="ops-shell">
+        <aside class="ops-sidebar" id="ops-sidebar" aria-label="Navegación de módulos">
+          <p class="ops-sidebar__brand">SIGTB</p>
+          <p class="ops-sidebar__caption">Panel operativo</p>
+          <nav class="dash-nav" id="dash-nav" aria-label="Módulos"></nav>
+        </aside>
+
+        <main class="ops-main" id="dash-main">
+      <div class="pending-role" id="dash-pending-card" hidden>
+        <div class="pending-role__card">
+          <div class="pending-role__icon" aria-hidden="true">
+            <svg viewBox="0 0 80 80" width="72" height="72">
+              <circle cx="34" cy="34" r="24" fill="none" stroke="#1a4a7a" stroke-width="4" />
+              <path d="M34 18v16h12" fill="none" stroke="#1a4a7a" stroke-width="4" stroke-linecap="round" />
+              <circle cx="54" cy="54" r="16" fill="#c4a574" />
+              <rect x="47.5" y="46" width="5" height="16" rx="1.2" fill="#5c4033" />
+              <rect x="55.5" y="46" width="5" height="16" rx="1.2" fill="#5c4033" />
+            </svg>
+          </div>
+          <h2 id="dash-pending-title">Asignación de rol pendiente</h2>
+          <p id="dash-pending-copy">Espera hasta que el administrador asigne tu rol.</p>
+        </div>
+      </div>
+      <div class="dash-panel" id="panel-sedes" hidden>
+        <header class="panel-head">
+          <h2>Sedes y servicios</h2>
+          <p class="subtitle">
+            Una ficha por empresa. Al seleccionarla verás sus datos, sedes y los servicios de cada sede.
+          </p>
+        </header>
+        <div class="card-grid" id="sedes-list"></div>
+        <div id="sedes-detail" class="sedes-detail" hidden></div>
+      </div>
+
+      <div class="dash-panel" id="panel-inventario" hidden>
+        <header class="panel-head">
+          <h2>Inventario biomédico</h2>
+          <p class="subtitle">
+            Equipos por servicio. Importación CSV: ADMIN / Dirección.
+            Eliminar inventario cargado y restaurar backup (30 min): Administrador y Director Operativo.
+            ESTADO se asigna después con Editar (opcional en el CSV).
+          </p>
+        </header>
+        <div class="instr-toolbar">
+          <div class="org-scope-bar" data-org-scope="inventario">
+            <button type="button" class="org-scope-bar__btn" data-org-open="inventario">
+              <span class="org-scope-bar__lead">
+                <span class="org-scope-bar__title">Empresa, sede y servicio</span>
+                <span class="org-scope-bar__summary" id="inv-scope-summary">Seleccionar Empresa, Sede y Servicio</span>
+              </span>
+              <span class="org-scope-bar__action">Cambiar</span>
+            </button>
+            <div class="org-scope-hidden">
+              <select id="inventario-empresa" aria-label="Empresa"></select>
+              <select id="inventario-sede" aria-label="Sede"></select>
+              <select id="inventario-servicio" aria-label="Servicio"></select>
+            </div>
+          </div>
+        </div>
+        <div class="inv-search-row">
+          <label class="inv-search" for="inventario-search">
+            <span class="inv-search__label">Buscar por #BIOMÉDICA, código de activo o EQUIPO</span>
+            <input
+              type="search"
+              id="inventario-search"
+              placeholder="Ej. CSC00331, 1500181 o MONITOR…"
+              autocomplete="off"
+              aria-label="Buscar por número biomédica, código de activo o equipo"
+            />
+          </label>
+          <p class="field-hint" id="inventario-search-hint" hidden></p>
+        </div>
+        <div class="toolbar">
+          <button type="button" class="btn btn-primary" id="inventario-crear" hidden>Crear equipo</button>
+          <input type="file" id="inventario-file" accept=".csv" />
+          <button type="button" class="btn btn-primary" id="inventario-import">Importar CSV</button>
+          <button type="button" class="btn btn-ghost" id="inventario-export-csv">Exportar CSV</button>
+          <button type="button" class="btn btn-ghost" id="inventario-export-xlsx">Exportar XLSX</button>
+          <button type="button" class="btn btn-ghost" id="inventario-export-pdf">Descargar plantilla PDF</button>
+          <button type="button" class="btn btn-danger" id="inventario-purge" hidden>
+            Eliminar inventario cargado
+          </button>
+          <button type="button" class="btn btn-ghost" id="inventario-restore-backup" hidden disabled>
+            Restaurar último backup
+          </button>
+        </div>
+        <p class="inv-recycle-banner" id="inventario-recycle-banner" hidden></p>
+        <p class="field-hint" id="inventario-import-hint" hidden>
+          CSV con encabezados:
+          #BIOMÉDICA, REGISTRO INVIMA, EQUIPO, MARCA, SERIE, MODELO, CLASIFICACIÓN RIESGO, UBICACIÓN,
+          ESTADO (opc.), Aplica MP/Cal/Val, FREQ y TIEMPO por actividad (opc.).
+          Acepta coma (,) o punto y coma (;).
+        </p>
+        <div class="admin-table-wrap">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>#BIOMÉDICA</th>
+                <th>CÓDIGO DE ACTIVO</th>
+                <th>REGISTRO INVIMA</th>
+                <th>EQUIPO</th>
+                <th>MARCA</th>
+                <th>SERIE</th>
+                <th>MODELO</th>
+                <th>CLASIFICACIÓN RIESGO</th>
+                <th>UBICACIÓN</th>
+                <th>ESTADO</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="inventario-body"></tbody>
+          </table>
+        </div>
+        <div class="suf-inv-pager" id="inventario-pager" hidden>
+          <button type="button" class="btn btn-ghost" id="inventario-prev">Anterior</button>
+          <span id="inventario-page-label"></span>
+          <button type="button" class="btn btn-ghost" id="inventario-next">Siguiente</button>
+          <label class="suf-inv-page-size" for="inventario-page-size">
+            Por página
+            <select id="inventario-page-size" aria-label="Equipos por página">
+              <option value="25">25</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="panel-empresas" hidden>
+        <header class="panel-head">
+          <h2>Empresas / sedes</h2>
+          <p class="subtitle">
+            Catálogo por fichas. Crea empresas con sus sedes, o añade sedes a una existente.
+          </p>
+        </header>
+
+        <div class="empresas-layout">
+          <aside class="empresas-actions">
+            <details class="empresas-action-card" id="empresa-form-wrap">
+              <summary>Crear empresa</summary>
+              <form id="empresa-form" class="empresas-mini-form">
+                <div class="field">
+                  <label for="empresa-razon">Razón social</label>
+                  <input id="empresa-razon" required placeholder="Ej. Clínica Santa Cruz" />
+                </div>
+                <div class="field">
+                  <label for="empresa-nit">NIT</label>
+                  <input id="empresa-nit" required placeholder="Único" />
+                </div>
+                <div class="nested-builder nested-builder--compact">
+                  <div class="nested-builder-head">
+                    <h4>Sedes</h4>
+                    <button type="button" class="btn btn-ghost btn-sm" id="empresa-add-sede">+ Sede</button>
+                  </div>
+                  <div id="empresa-sedes-builder"></div>
+                  <p class="field-hint">Servicios separados por comas. Si ya tienen código, escríbalo delante (ej. 3000 Urgencias). El ID automático solo se usa cuando no hay identificador.</p>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Guardar empresa</button>
+              </form>
+            </details>
+
+            <details class="empresas-action-card" id="sede-form-wrap">
+              <summary>Añadir sede</summary>
+              <form id="sede-form" class="empresas-mini-form">
+                <div class="field">
+                  <label for="sede-empresa">Empresa</label>
+                  <select id="sede-empresa" required></select>
+                </div>
+                <div class="field">
+                  <label for="sede-nombre">Nombre de sede</label>
+                  <input id="sede-nombre" required placeholder="Ej. San Gil Plaza" />
+                </div>
+                <div class="field">
+                  <label for="sede-id">ID de sede (opc.)</label>
+                  <input id="sede-id" placeholder="Solo si ya existe un código" />
+                </div>
+                <div class="field">
+                  <label for="sede-servicios">Servicios (opc.)</label>
+                  <input id="sede-servicios" placeholder="3000 Urgencias, 3001 Cirugía General" />
+                </div>
+                <p class="field-hint">Si el servicio ya tiene identificador (ej. 3000), no se genera AG00001. El ID automático solo se crea cuando falta el código.</p>
+                <button type="submit" class="btn btn-primary btn-sm">Guardar sede</button>
+              </form>
+            </details>
+
+            <details class="empresas-action-card" id="assign-form-wrap" hidden>
+              <summary>Asignar personal</summary>
+              <form id="assign-form" class="empresas-mini-form">
+                <div class="field">
+                  <label for="assign-empresa">Empresa</label>
+                  <select id="assign-empresa" required></select>
+                </div>
+                <div class="field">
+                  <label for="assign-sede">Sede</label>
+                  <select id="assign-sede" required></select>
+                </div>
+                <div class="field">
+                  <label for="assign-user">Personal</label>
+                  <select id="assign-user" required></select>
+                </div>
+                <p class="field-hint">Solo personal de la empresa seleccionada.</p>
+                <button type="submit" class="btn btn-primary btn-sm">Asignar a sede</button>
+              </form>
+            </details>
+          </aside>
+
+          <section class="empresas-catalog" aria-label="Catálogo de empresas">
+            <header class="empresas-catalog__head">
+              <h3>Catálogo</h3>
+              <p class="field-hint">Selecciona una empresa para ver sedes y servicios.</p>
+            </header>
+            <div id="empresas-list" class="empresas-grid"></div>
+            <div id="empresas-detail" class="empresas-detail" hidden></div>
+          </section>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="panel-direccion" hidden>
+        <header class="panel-head">
+          <h2>Módulo Dirección</h2>
+          <p class="subtitle">
+            Elige la empresa: verás sus sedes en fichas compactas. Expande un servicio
+            para el resumen de inventario.
+          </p>
+        </header>
+
+        <div class="direccion-toolbar">
+          <div class="field">
+            <label for="direccion-empresa">Empresa</label>
+            <select id="direccion-empresa">
+              <option value="">Selecciona empresa</option>
+            </select>
+          </div>
+          <div class="direccion-log-box" id="direccion-log-box" hidden>
+            <p class="field-hint" id="direccion-log-hint">Sin eventos pendientes de descarga.</p>
+            <button type="button" class="btn btn-ghost" id="direccion-log-download" hidden>
+              Descargar log de eventos (Excel)
+            </button>
+          </div>
+        </div>
+
+        <p id="direccion-empty" class="empty" hidden>
+          Selecciona una empresa para desplegar sus sedes y servicios.
+        </p>
+        <div id="direccion-tree" class="direccion-tree" hidden></div>
+      </div>
+
+      <div class="dash-panel" id="panel-adquisicion" hidden>
+        <header class="panel-head">
+          <h2>Tablero de forma de adquisición</h2>
+          <p class="subtitle">
+            Seguimiento de Comodato/Leasing (MP a cargo de un tercero) y de equipos
+            sin modalidad registrada. Reservado a Coordinador y Director operativo.
+          </p>
+        </header>
+        <p class="field-hint" id="adq-msg" hidden></p>
+        <div id="adq-kpis" class="dim-kpi-row"></div>
+        <div class="dim-split">
+          <section>
+            <h3>Por empresa</h3>
+            <div class="dim-table-wrap">
+              <table class="dim-table" id="adq-table-empresa">
+                <thead>
+                  <tr>
+                    <th>Empresa</th>
+                    <th>Dotación</th>
+                    <th>Comodato/Leasing</th>
+                    <th>Con dato</th>
+                    <th>Sin dato</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+          <section>
+            <h3>Por sede</h3>
+            <div class="dim-table-wrap">
+              <table class="dim-table" id="adq-table-sede">
+                <thead>
+                  <tr>
+                    <th>Empresa</th>
+                    <th>Sede</th>
+                    <th>Dotación</th>
+                    <th>Tercerizado MP</th>
+                    <th>Sin dato</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+        <section>
+          <h3>Por servicio</h3>
+          <div class="dim-table-wrap">
+            <table class="dim-table" id="adq-table-servicio">
+              <thead>
+                <tr>
+                  <th>Empresa</th>
+                  <th>Sede</th>
+                  <th>Servicio</th>
+                  <th>Dotación</th>
+                  <th>Tercerizado MP</th>
+                  <th>Sin dato</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+        <section>
+          <h3>Equipos pendientes de modalidad</h3>
+          <p class="field-hint">
+            Cada ítem genera o reutiliza una solicitud en bandeja para que el cargo
+            asignado a la sede registre Compra directa, Leasing, Comodato o No Aplica.
+          </p>
+          <div class="dim-table-wrap">
+            <table class="dim-table" id="adq-table-pendientes">
+              <thead>
+                <tr>
+                  <th>Empresa</th>
+                  <th>Sede</th>
+                  <th>Servicio</th>
+                  <th>Equipo</th>
+                  <th>Código</th>
+                  <th>Dato actual</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <div class="dash-panel" id="panel-dimensionamiento-empresa" hidden>
+        <header class="panel-head">
+          <h2>Dimensionamiento empresarial</h2>
+          <p class="subtitle">
+            Consolidado de todas las sedes: carga horaria de Ingeniería Clínica y plantilla
+            por criticidad. Comodato/Leasing no entran al IC por criticidad; en horas no
+            suman MP ni el correctivo estimado, pero sí otras actividades o correctivos de apoyo.
+            Alto por único equipo en el área usa el ratio medio; especializado o ambos, el alto.
+            El personal actual son ingenieros y técnicos asignados a cada sede.
+            Reservado a Administrador, Coordinador y Director operativo.
+          </p>
+        </header>
+        <div class="instr-toolbar dim-toolbar">
+          <label class="instr-field" id="dim-emp-empresa-wrap" hidden>
+            <span>Empresa</span>
+            <select id="dim-emp-empresa"></select>
+          </label>
+          <label class="instr-field" for="dim-emp-anio">
+            <span>Año</span>
+            <input id="dim-emp-anio" type="number" min="2000" max="2100" step="1" aria-label="Año activo" />
+          </label>
+          <button type="button" class="btn btn-primary" id="dim-emp-reload">Actualizar</button>
+          <button type="button" class="btn btn-ghost" id="dim-emp-export-xlsx" hidden>Exportar XLSX</button>
+          <button type="button" class="btn btn-primary" id="dim-emp-export-pdf" hidden>Generar informe PDF</button>
+        </div>
+        <p class="field-hint" id="dim-emp-msg" hidden></p>
+
+        <div id="dim-emp-content" hidden>
+          <div id="dim-emp-kpis" class="dim-kpi-row"></div>
+          <div id="dim-emp-charts" class="pm-charts"></div>
+
+          <section>
+            <h3>Por forma de adquisición</h3>
+            <p class="field-hint">
+              Comodato y Leasing no alimentan el IC por criticidad. En carga horaria no
+              suman MP ni el correctivo estimado; sí pueden sumar otras actividades o
+              correctivos de apoyo.
+            </p>
+            <div class="dim-table-wrap">
+              <table class="dim-table" id="dim-emp-table-adquisicion">
+                <thead>
+                  <tr>
+                    <th>Forma de adquisición</th>
+                    <th>Equipos</th>
+                    <th>En plantilla</th>
+                    <th>Fuera de plantilla</th>
+                    <th>Horas carga</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-dim-emp-section="ratios">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="true">
+                <span class="dim-acc__chevron" aria-hidden="true">▾</span>
+                <span>Equipos por ingeniero clínico</span>
+              </button>
+            </div>
+            <div class="dim-acc__body">
+              <p class="field-hint">
+                Indica cuántos equipos de cada criticidad cubre 1 ingeniero clínico.
+                Alto agrupa alta criticidad, soporte vital y equipos especializados.
+              </p>
+              <form id="dim-emp-form-ratios" class="dim-params-grid">
+                <label>
+                  <span>Baja criticidad (equipos / IC)</span>
+                  <input type="number" step="1" min="1" name="equipos_ic_bajo" required />
+                </label>
+                <label>
+                  <span>Media criticidad (equipos / IC)</span>
+                  <input type="number" step="1" min="1" name="equipos_ic_medio" required />
+                </label>
+                <label>
+                  <span>Alta criticidad / especializados (equipos / IC)</span>
+                  <input type="number" step="1" min="1" name="equipos_ic_alto" required />
+                </label>
+              </form>
+              <button type="button" class="btn btn-primary" id="dim-emp-save-ratios">
+                Guardar plantilla
+              </button>
+            </div>
+          </section>
+
+          <div class="dim-split">
+            <section>
+              <h3>Por criticidad (dotación)</h3>
+              <div class="dim-table-wrap">
+                <table class="dim-table" id="dim-emp-table-criticidad">
+                  <thead>
+                    <tr>
+                      <th>Criticidad</th>
+                      <th>Equipos</th>
+                      <th>Equipos / IC</th>
+                      <th>IC (decimal)</th>
+                      <th>IC recomendados</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </section>
+            <section>
+              <h3>Carga horaria consolidada</h3>
+              <div class="dim-table-wrap">
+                <table class="dim-table" id="dim-emp-table-actividad">
+                  <thead>
+                    <tr>
+                      <th>Actividad</th>
+                      <th>Horas/año</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+          <section>
+            <h3>Por sede</h3>
+            <p class="field-hint">
+              Incluye todas las sedes. Comodato/Leasing siguen en la carga horaria (salvo MP
+              y correctivo estimado). No entran en el IC por criticidad. El personal es el
+              asignado a cada sede (ingeniero o técnico).
+            </p>
+            <div class="dim-table-wrap">
+              <table class="dim-table" id="dim-emp-table-sede">
+                <thead>
+                  <tr>
+                    <th>Sede</th>
+                    <th>Carga</th>
+                    <th>Plantilla</th>
+                    <th>C/L</th>
+                    <th>Bajo</th>
+                    <th>Medio</th>
+                    <th>Alto</th>
+                    <th>Horas ajustadas</th>
+                    <th>IC por horas</th>
+                    <th>IC por criticidad</th>
+                    <th>Asignados a la sede</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section>
+            <h3>Por tipo de equipo</h3>
+            <div class="dim-table-wrap">
+              <table class="dim-table" id="dim-emp-table-tipo">
+                <thead>
+                  <tr>
+                    <th>Equipo</th>
+                    <th>Cantidad</th>
+                    <th>Criticidad</th>
+                    <th>Equipos / IC</th>
+                    <th>IC (decimal)</th>
+                    <th>IC recomendados</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="panel-rbac" hidden>
+        <header class="panel-head">
+          <h2>Roles y permisos</h2>
+          <p class="subtitle">
+            Exclusivo Administrador. Activa o inactiva módulos por rol (p. ej. Agregar empresa)
+            y guarda: los cambios autorizan o restringen funciones reales al iniciar sesión
+            o refrescar permisos. No confundir con el cargo JOB del usuario (Director,
+            Coordinador, etc.), que se asigna en Usuarios.
+          </p>
+        </header>
+
+        <div id="rbac-forbidden" class="rbac-forbidden" hidden>
+          <div class="rbac-forbidden__card">
+            <div class="rbac-forbidden__badge" aria-hidden="true">AD</div>
+            <h3>Acceso no autorizado</h3>
+            <p>Esta sección es exclusiva del Rol Administrador.</p>
+          </div>
+        </div>
+
+        <div id="rbac-content">
+          <div class="toolbar rbac-toolbar">
+            <button type="button" class="btn btn-ghost" id="rbac-export-csv">Exportar CSV</button>
+            <button type="button" class="btn btn-ghost" id="rbac-export-xlsx">Exportar XLSX</button>
+          </div>
+          <div class="rbac-layout">
+            <section class="rbac-card" aria-labelledby="rbac-roles-title">
+              <header class="rbac-card__head">
+                <div>
+                  <p class="rbac-eyebrow">Roles</p>
+                  <h3 id="rbac-roles-title">Roles del sistema</h3>
+                  <p class="field-hint">Selecciona un rol para ver y editar sus permisos.</p>
+                </div>
+              </header>
+              <ul class="rbac-list" id="rbac-roles-list"></ul>
+              <form id="rbac-role-form" class="rbac-inline-form">
+                <input id="rbac-role-name" type="text" placeholder="Nuevo rol (ej. Auditoría)" required />
+                <button type="submit" class="btn btn-primary">Crear rol</button>
+              </form>
+            </section>
+
+            <section class="rbac-card rbac-card--perms" aria-labelledby="rbac-perms-title">
+              <header class="rbac-card__head rbac-card__head--row">
+                <div>
+                  <p class="rbac-eyebrow">Permisos del rol</p>
+                  <h3 id="rbac-perms-title">Sin rol seleccionado</h3>
+                  <p class="field-hint" id="rbac-perms-hint">
+                    Los módulos se agrupan en secciones desplegables. Expande cada una para activar o desactivar permisos.
+                  </p>
+                </div>
+                <button type="button" class="btn btn-primary" id="rbac-save-matrix" hidden>
+                  Guardar cambios
+                </button>
+              </header>
+              <div id="rbac-perms-empty" class="rbac-perms-empty">
+                Elige un rol a la izquierda para gestionar sus módulos.
+              </div>
+              <div class="rbac-perms-list" id="rbac-perms-list" hidden></div>
+            </section>
+          </div>
+
+          <section class="rbac-card backup-card" aria-labelledby="backup-title">
+            <header class="rbac-card__head rbac-card__head--row">
+              <div>
+                <p class="rbac-eyebrow">Continuidad</p>
+                <h3 id="backup-title">Respaldo de bases de datos</h3>
+                <p class="field-hint" id="backup-hint">
+                  Copias automáticas al arrancar, cada 30 minutos y al cerrar. Se guardan
+                  en el proyecto y una copia fuera de OneDrive para evitar corrupción.
+                </p>
+              </div>
+              <button type="button" class="btn btn-primary" id="backup-create-btn">
+                Crear respaldo ahora
+              </button>
+            </header>
+            <p class="backup-paths" id="backup-paths"></p>
+            <div class="admin-table-wrap">
+              <table class="users-table" id="backup-table">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Motivo</th>
+                    <th>Bases</th>
+                    <th>Copia externa</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="backup-table-body">
+                  <tr><td colspan="5">Cargando respaldos…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="panel-usuarios" hidden>
+        <header class="panel-head">
+          <h2>Usuarios</h2>
+          <p class="subtitle">Crear, editar, eliminar y exportar usuarios (ADMIN / Dirección).</p>
+        </header>
+        <section class="fallos-dash" id="fallos-dashboard" hidden>
+          <header class="fallos-dash__head">
+            <h3>Balance de reportes de fallos</h3>
+            <p class="field-hint">Indicadores de radicación y atención. Visible solo para Administrador.</p>
+          </header>
+          <div class="fallos-kpis" id="fallos-kpis"></div>
+          <div class="fallos-chart-wrap">
+            <p class="fallos-chart__title">Reportes por estado</p>
+            <div id="fallos-chart" class="fallos-chart" role="img" aria-label="Gráfica de reportes de fallos"></div>
+          </div>
+        </section>
+        <div class="toolbar">
+          <button type="button" class="btn btn-primary" id="admin-create-user-btn">Nuevo usuario</button>
+          <button type="button" class="btn btn-ghost" id="export-csv-btn">Exportar CSV</button>
+          <button type="button" class="btn btn-ghost" id="export-xlsx-btn">Exportar XLSX</button>
+          <button type="button" class="btn btn-primary" id="admin-refresh-btn">Actualizar</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="users-table" id="users-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>usuario_login</th>
+                <th>NAME_USER</th>
+                <th>LAST_NAME_USER</th>
+                <th>JOB</th>
+                <th>ROLL</th>
+                <th>Empresa</th>
+                <th>creation_date</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="dash-panel dash-panel--mail" id="panel-bandeja" hidden>
+        <div class="mail-app">
+          <aside class="mail-sidebar" aria-label="Bandeja de atención de solicitudes">
+            <div class="mail-brand">
+              <p class="mail-brand__mark">SIGTB</p>
+              <p class="mail-brand__sub">Atención de solicitudes</p>
+            </div>
+
+            <nav class="mail-nav" aria-label="Carpetas">
+              <button type="button" class="mail-nav__item is-active" data-mail-folder="inbox">
+                <span class="mail-nav__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8l8 5 8-5"/><rect x="3" y="6" width="18" height="12" rx="2"/></svg>
+                </span>
+                <span class="mail-nav__label">Entrada</span>
+                <span class="mail-badge" id="mail-badge-inbox" hidden>0</span>
+              </button>
+              <button type="button" class="mail-nav__item" data-mail-folder="notificaciones" id="mail-folder-notif" hidden>
+                <span class="mail-nav__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+                </span>
+                <span class="mail-nav__label">Notificaciones</span>
+                <span class="mail-badge" id="mail-badge-notif" hidden>0</span>
+              </button>
+              <button type="button" class="mail-nav__item" data-mail-folder="solicitudes">
+                <span class="mail-nav__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
+                </span>
+                <span class="mail-nav__label">Solicitudes</span>
+                <span class="mail-badge" id="mail-badge-sol" hidden>0</span>
+              </button>
+              <button type="button" class="mail-nav__item mail-nav__item--compose" data-mail-folder="compose" id="mail-folder-compose" hidden>
+                <span class="mail-nav__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                </span>
+                <span class="mail-nav__label">Redactar</span>
+              </button>
+            </nav>
+
+            <div class="mail-sidebar__section">
+              <div class="mail-sidebar__head">
+                <p class="mail-sidebar__title">Mensajes</p>
+                <button type="button" class="mail-icon-btn" id="mail-refresh" title="Actualizar" aria-label="Actualizar bandeja">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a9 9 0 1 1-2.6-6.3"/><path d="M21 3v6h-6"/></svg>
+                </button>
+              </div>
+              <div class="mail-filters" id="mail-filters">
+                <p class="mail-filters__counts" id="mail-filter-counts">Pendientes: 0 · Tramitados: 0</p>
+                <label class="mail-filters__field" for="mail-filter-tipo">
+                  <span>Tipo</span>
+                  <select id="mail-filter-tipo" aria-label="Filtrar por tipo de mensaje">
+                    <option value="all">Todos los tipos</option>
+                    <option value="solicitud">Solicitudes</option>
+                    <option value="actualizar_datos_suficiencia">Actualización de suficiencia</option>
+                    <option value="permisos_ampliados">Permisos ampliados</option>
+                    <option value="consulta_general">Consulta general</option>
+                    <option value="notif">Notificaciones</option>
+                    <option value="fallo">Reportes de fallos</option>
+                  </select>
+                </label>
+                <label class="mail-filters__field" for="mail-filter-tramite">
+                  <span>Estado</span>
+                  <select id="mail-filter-tramite" aria-label="Filtrar tramitados o pendientes">
+                    <option value="all">Todos</option>
+                    <option value="pendiente">No tramitados</option>
+                    <option value="tramitado">Tramitados</option>
+                  </select>
+                </label>
+                <label class="mail-filters__field" for="mail-filter-limit">
+                  <span>Mostrar</span>
+                  <select id="mail-filter-limit" aria-label="Cantidad de mensajes">
+                    <option value="20">Últimos 20</option>
+                    <option value="50" selected>Últimos 50</option>
+                    <option value="100">Últimos 100</option>
+                  </select>
+                </label>
+              </div>
+              <div class="mail-list" id="mail-list" role="listbox" aria-label="Mensajes de la bandeja"></div>
+            </div>
+          </aside>
+
+          <section class="mail-main" id="mail-reading">
+            <header class="mail-main__top">
+              <div class="mail-main__heading">
+                <button type="button" class="mail-back" id="mail-back" hidden>← Mensajes</button>
+                <p class="eyebrow" id="mail-view-eyebrow">Bandeja</p>
+                <h2 id="mail-view-title">Selecciona un mensaje</h2>
+              </div>
+              <div class="mail-main__toolbar" id="mail-msg-actions"></div>
+            </header>
+
+            <div class="mail-main__body">
+              <div class="mail-empty" id="mail-empty">
+                <p class="eyebrow">Lectura</p>
+                <h3>Ningún mensaje abierto</h3>
+                <p>Elige un ítem de la bandeja izquierda para ver el detalle y actuar sobre él.</p>
+              </div>
+
+              <article class="mail-message" id="mail-message" hidden>
+                <dl class="mail-meta">
+                  <div><dt>De</dt><dd id="mail-msg-from"></dd></div>
+                  <div><dt>Fecha</dt><dd id="mail-msg-date"></dd></div>
+                  <div><dt>Estado</dt><dd id="mail-msg-estado"></dd></div>
+                  <div><dt>Tipo</dt><dd id="mail-msg-type"></dd></div>
+                </dl>
+                <h3 class="mail-message__subject" id="mail-msg-subject" hidden></h3>
+                <div class="mail-message__body" id="mail-msg-body"></div>
+              </article>
+
+              <form id="solicitud-form" class="mail-compose" hidden>
+                <div class="mail-compose__row">
+                  <label for="solicitud-sede">Sede</label>
+                  <select id="solicitud-sede" required></select>
+                  <p class="field-hint" id="solicitud-sede-hint">Se asigna según tu perfil / sedes vinculadas.</p>
+                </div>
+                <div class="mail-compose__row">
+                  <label for="solicitud-destinatario">Destinatario</label>
+                  <select id="solicitud-destinatario" required>
+                    <option value="">Selecciona destinatario</option>
+                    <option value="direccion">Dirección</option>
+                    <option value="coordinacion">Coordinación</option>
+                    <option value="ingenieria">Ingeniería</option>
+                    <option value="soporte">Soporte técnico</option>
+                    <option value="asistencial">Asistencial</option>
+                    <option value="administracion" id="solicitud-dest-admin" hidden>Administración</option>
+                  </select>
+                </div>
+                <div class="mail-compose__row">
+                  <label for="solicitud-prioridad">Prioridad</label>
+                  <select id="solicitud-prioridad" required>
+                    <option value="MODERADA">Moderada</option>
+                    <option value="BAJA">Baja</option>
+                    <option value="ALTA">Alta</option>
+                  </select>
+                </div>
+                <div class="mail-compose__row">
+                  <label for="solicitud-tipo">Tipo</label>
+                  <select id="solicitud-tipo">
+                    <option value="consulta_general">Consulta / solicitud general</option>
+                    <option value="modificar_sede">Modificar sede</option>
+                    <option value="modificar_empresa">Modificar empresa</option>
+                    <option value="actualizar_datos_suficiencia">Actualizar datos de suficiencia</option>
+                    <option value="permisos_ampliados">Permisos ampliados</option>
+                  </select>
+                </div>
+                <div class="mail-compose__row">
+                  <label for="solicitud-asunto">Asunto</label>
+                  <input id="solicitud-asunto" type="text" maxlength="120" required placeholder="Resumen de la solicitud" />
+                  <p class="field-hint">Máximo 120 caracteres.</p>
+                </div>
+                <div class="mail-compose__row mail-compose__row--stack">
+                  <label for="solicitud-mensaje">Mensaje</label>
+                  <textarea id="solicitud-mensaje" rows="8" maxlength="2000" placeholder="Describe el motivo de la solicitud"></textarea>
+                  <p class="field-hint">Máximo 2000 caracteres.</p>
+                </div>
+                <div class="mail-compose__footer">
+                  <button type="submit" class="btn btn-primary">Enviar solicitud</button>
+                </div>
+              </form>
+
+              <form id="notif-empresa-form" class="mail-compose" hidden>
+                <input type="hidden" id="notif-id" />
+                <input type="hidden" id="notif-usuario-id" />
+                <div class="mail-compose__row">
+                  <label for="notif-razon">Nombre de la empresa</label>
+                  <input id="notif-razon" required maxlength="255" />
+                </div>
+                <div class="mail-compose__row">
+                  <label for="notif-nit">NIT</label>
+                  <input id="notif-nit" required maxlength="50" />
+                </div>
+                <p class="field-hint">
+                  Al aprobar se crea la empresa (o se reutiliza si el NIT ya existe) y se asigna al usuario que hizo la solicitud.
+                </p>
+                <div class="nested-builder" hidden>
+                  <div class="nested-builder-head">
+                    <h4>Sedes iniciales (exclusivas)</h4>
+                    <button type="button" class="btn btn-ghost" id="notif-add-sede">Añadir sede</button>
+                  </div>
+                  <div id="notif-sedes-builder"></div>
+                </div>
+                <div class="mail-compose__footer">
+                  <button type="submit" class="btn btn-primary">Aprobar y asignar al solicitante</button>
+                </div>
+              </form>
+
+              <form id="notif-job-form" class="mail-compose" hidden>
+                <input type="hidden" id="notif-job-id" />
+                <input type="hidden" id="notif-job-user-id" />
+                <div class="mail-compose__row">
+                  <label for="notif-job-select">JOB</label>
+                  <select id="notif-job-select" required></select>
+                  <p class="field-hint" id="notif-job-hint">Elige el cargo y confirma para resolver la solicitud.</p>
+                </div>
+                <div class="mail-compose__footer">
+                  <button type="submit" class="btn btn-primary">Asignar JOB</button>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="panel-suficiencia" hidden>
+        <header class="panel-head">
+          <div class="panel-head__text">
+            <h2>Suficiencia de equipos</h2>
+            <p class="subtitle">Instrumento de análisis: capacidad, inventario, concurrencia/demanda y evaluación de suficiencia por servicio.</p>
+          </div>
+          <button type="button" class="help-btn" id="btn-help-suficiencia" data-help-module="suficiencia" title="Guía de uso" aria-label="Guía de uso" hidden>
+            <span class="help-btn__icon" aria-hidden="true">?</span>
+            <span class="help-btn__label">Guía de uso</span>
+          </button>
+        </header>
+
+        <div class="instr-toolbar suf-toolbar">
+          <div class="org-scope-bar" data-org-scope="suficiencia">
+            <button type="button" class="org-scope-bar__btn" data-org-open="suficiencia">
+              <span class="org-scope-bar__lead">
+                <span class="org-scope-bar__title">Empresa, sede y servicio</span>
+                <span class="org-scope-bar__summary" id="suf-scope-summary">Seleccionar Empresa, Sede y Servicio</span>
+              </span>
+              <span class="org-scope-bar__action">Cambiar</span>
+            </button>
+            <div class="org-scope-hidden">
+              <select id="suf-empresa" aria-label="Empresa"></select>
+              <select id="suf-sede" aria-label="Sede"></select>
+              <select id="suf-servicio" aria-label="Servicio"></select>
+            </div>
+          </div>
+          <div class="instr-toolbar__actions suf-toolbar-actions">
+            <button type="button" class="btn btn-ghost" id="suf-btn-refresh">Actualizar</button>
+            <button type="button" class="btn btn-ghost" id="suf-btn-recalc" hidden>Recalcular todo</button>
+            <button type="button" class="btn btn-ghost" id="suf-btn-params">Parámetros</button>
+            <button type="button" class="btn btn-primary" id="suf-btn-solicitar" hidden>Solicitar actualización</button>
+          </div>
+        </div>
+
+        <p class="suf-banner" id="suf-banner" hidden></p>
+        <p class="form-msg" id="suf-msg" hidden></p>
+
+        <div class="suf-sheet" id="suf-sheet-params" hidden>
+          <div class="suf-sheet-title">PARÁMETROS INSTITUCIONALES</div>
+          <p class="suf-sheet-note">Utilización segura, respaldo y umbral de alerta aplicados a todos los cálculos del módulo.</p>
+          <form id="suf-form-params" class="suf-params-row">
+            <label class="field">
+              <span>Utilización segura (%) <button type="button" class="tip" data-tip="utilizacion_segura" aria-label="Ayuda">?</button></span>
+              <input type="number" id="suf-utilizacion" min="1" max="100" step="1" />
+            </label>
+            <label class="field">
+              <span>Respaldo (%) <button type="button" class="tip" data-tip="respaldo_pct" aria-label="Ayuda">?</button></span>
+              <input type="number" id="suf-respaldo" min="0" max="100" step="1" />
+            </label>
+            <label class="field">
+              <span>Umbral alerta (%) <button type="button" class="tip" data-tip="umbral_alerta" aria-label="Ayuda">?</button></span>
+              <input type="number" id="suf-umbral" min="1" max="100" step="1" />
+            </label>
+            <label class="field">
+              <span>Redondeo</span>
+              <select id="suf-redondeo">
+                <option value="CEIL">CEIL (hacia arriba)</option>
+                <option value="ROUND">ROUND (más cercano)</option>
+              </select>
+            </label>
+            <button type="submit" class="btn btn-primary" id="suf-save-params">Guardar parámetros</button>
+          </form>
+        </div>
+
+        <div class="suf-sheet">
+          <div class="suf-sheet-title">DATOS DEL SERVICIO</div>
+          <p class="suf-sheet-note">Aquí se calcula capacidad base y % ocupación. Estos datos los entrega la institución o se calculan con sus indicadores.</p>
+          <div class="suf-scroll">
+            <table class="suf-grid" id="suf-tabla-datos">
+              <thead>
+                <tr>
+                  <th>Servicio</th>
+                  <th>Capacidad instalada <button type="button" class="tip" data-tip="capacidad_instalada" aria-label="Ayuda">?</button></th>
+                  <th>Unidad de capacidad</th>
+                  <th>Promedio ocupado/simultáneo <button type="button" class="tip" data-tip="promedio_ocupado" aria-label="Ayuda">?</button></th>
+                  <th class="col-calc">% ocupación calculado <button type="button" class="tip" data-tip="ocupacion" aria-label="Ayuda">?</button></th>
+                  <th>Horas servicio/día</th>
+                  <th>Jornadas/día</th>
+                  <th>Fuente del dato</th>
+                  <th>Observación</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="suf-datos-body">
+                <tr><td colspan="10">Seleccione empresa y servicio.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="suf-sheet">
+          <div class="suf-sheet-title">INVENTARIO BIOMÉDICO POR SERVICIO</div>
+          <div class="suf-inv-controls">
+            <label class="suf-inv-search" for="suf-inv-search">
+              <span class="inv-search__label">Buscar por equipo, marca o serial</span>
+              <input
+                type="search"
+                id="suf-inv-search"
+                placeholder="Equipo, marca o serial…"
+                autocomplete="off"
+                aria-label="Filtrar inventario por equipo, marca o serial"
+              />
+            </label>
+            <label class="suf-inv-page-size" for="suf-inv-page-size">
+              <span class="inv-search__label">Mostrar</span>
+              <select id="suf-inv-page-size" aria-label="Cantidad de equipos a visualizar">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+            </label>
+          </div>
+          <p class="suf-sheet-note">Inventario real del servicio. La columna <em>Disponible real</em> se calcula y se toma automáticamente en la evaluación.</p>
+          <div class="suf-scroll">
+            <table class="suf-grid" id="suf-tabla-inv">
+              <thead>
+                <tr>
+                  <th>Servicio</th>
+                  <th>Área/Ambiente</th>
+                  <th>Equipo</th>
+                  <th>Marca / Modelo</th>
+                  <th>Serial / Placa</th>
+                  <th>Cantidad inventario</th>
+                  <th>Cantidad operativa</th>
+                  <th>En mantenimiento</th>
+                  <th>Prestado / no disponible</th>
+                  <th class="col-calc">Disponible real <button type="button" class="tip" data-tip="disponible" aria-label="Ayuda">?</button></th>
+                  <th>Estado</th>
+                  <th>Observación</th>
+                </tr>
+              </thead>
+              <tbody id="suf-inv-body">
+                <tr><td colspan="12">Sin inventario para el servicio.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="suf-inv-pager" id="suf-inv-pager" hidden>
+            <span id="suf-inv-page-label"></span>
+            <button type="button" class="btn btn-ghost btn-sm" id="suf-inv-prev">Anterior</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="suf-inv-next">Siguiente</button>
+          </div>
+          <p class="suf-foot-hint" id="suf-inv-hint"></p>
+        </div>
+
+        <div class="suf-sheet">
+          <div class="suf-sheet-title">DATOS PARA CALCULAR CONCURRENCIA Y DEMANDA</div>
+          <p class="suf-sheet-note">
+            Por cada servicio y equipo indique cuántos pacientes/puestos lo requieren al mismo tiempo o cuál es la demanda diaria.
+            Los datos se guardan y la evaluación se calcula automáticamente al ingresarlos.
+          </p>
+          <div class="suf-scroll suf-scroll-fit">
+            <table class="suf-grid suf-grid-fit" id="suf-tabla-matriz">
+              <colgroup>
+                <col class="fit-srv" />
+                <col class="fit-eq" />
+                <col class="fit-tipo" />
+                <col class="fit-num" />
+                <col class="fit-num" />
+                <col class="fit-num" />
+                <col class="fit-num" />
+                <col class="fit-num" />
+                <col class="fit-calc" />
+                <col class="fit-fuente" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>Servicio</th>
+                  <th>Equipo</th>
+                  <th>Tipo cálculo <button type="button" class="tip" data-tip="tipo_calculo" aria-label="Ayuda sobre tipos de cálculo" title="Clic para ver tipos de cálculo">?</button></th>
+                  <th>Pacientes/puestos simultáneos <button type="button" class="tip" data-tip="simultaneos" aria-label="Ayuda">?</button></th>
+                  <th>Demanda diaria / procedimientos día</th>
+                  <th>Tiempo uso min por atención</th>
+                  <th>Mínimo técnico <button type="button" class="tip" data-tip="minimo_tecnico" aria-label="Ayuda">?</button></th>
+                  <th>Respaldo específico</th>
+                  <th class="col-calc">% concurrencia calculado <button type="button" class="tip" data-tip="concurrencia" aria-label="Ayuda">?</button></th>
+                  <th class="col-fuente">Fuente del dato</th>
+                </tr>
+              </thead>
+              <tbody id="suf-matriz-body">
+                <tr><td colspan="10">Sin equipos en el servicio.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="suf-sheet">
+          <div class="suf-sheet-title-row">
+            <div class="suf-sheet-title" id="suf-eval-title">EVALUACIÓN DE SUFICIENCIA</div>
+            <button type="button" class="btn btn-ghost suf-print-btn" id="suf-btn-print" title="Imprimir informe de evaluación">
+              Imprimir informe
+            </button>
+          </div>
+          <p class="suf-sheet-note">Resultado automático por equipo: requerido, inventario disponible, brecha y % de suficiencia.</p>
+          <div class="pm-charts" id="suf-eval-charts"></div>
+          <div class="suf-scroll suf-scroll-wide">
+            <table class="suf-grid suf-grid-eval" id="suf-tabla-eval">
+              <thead>
+                <tr>
+                  <th>Equipo</th>
+                  <th>Tipo cálculo</th>
+                  <th>Capacidad base auto</th>
+                  <th>% ocupación auto</th>
+                  <th>Puestos/pacientes ocupados auto</th>
+                  <th>Pacientes/puestos simultáneos</th>
+                  <th>% concurrencia auto</th>
+                  <th>Demanda diaria auto</th>
+                  <th>Tiempo uso min auto</th>
+                  <th>Horas servicio auto</th>
+                  <th>Utilización segura</th>
+                  <th>Mínimo técnico</th>
+                  <th>Respaldo %</th>
+                  <th>Req. por capacidad <button type="button" class="tip" data-tip="req_capacidad" aria-label="Ayuda">?</button></th>
+                  <th>Req. por demanda <button type="button" class="tip" data-tip="req_demanda" aria-label="Ayuda">?</button></th>
+                  <th>Requerido base</th>
+                  <th>Respaldo unidades</th>
+                  <th>Requerido final <button type="button" class="tip" data-tip="requerido_final" aria-label="Ayuda">?</button></th>
+                  <th>Inventario disponible auto <button type="button" class="tip" data-tip="disponible" aria-label="Ayuda">?</button></th>
+                  <th class="col-brecha">Brecha <button type="button" class="tip" data-tip="brecha" aria-label="Ayuda">?</button></th>
+                  <th>% suficiencia <button type="button" class="tip" data-tip="suficiencia" aria-label="Ayuda">?</button></th>
+                  <th>Resultado</th>
+                  <th>Acción sugerida <button type="button" class="tip" data-tip="acciones" aria-label="Ayuda">?</button></th>
+                  <th class="col-fuente">Fuente / Información</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="suf-eval-body">
+                <tr><td colspan="25">Sin evaluaciones todavía.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tip-bubble" id="suf-tip-bubble" hidden role="tooltip"></div>
+      </div>
+
+      <div class="dash-panel" id="panel-dimensionamiento" hidden>
+        <header class="panel-head">
+          <div class="panel-head__text">
+            <h2>Dimensionamiento de personal</h2>
+            <p class="subtitle">
+              Instrumento de Ingeniería Clínica: carga anual e Ingenieros Clínicos requeridos.
+              Comodato/Leasing no entran al IC por criticidad; en horas no suman MP ni el
+              correctivo estimado, pero sí otras actividades o correctivos de apoyo.
+              Si la criticidad es Alta, indique si es por único equipo en el área o por alta complejidad.
+              El personal comparado es el asignado a la sede.
+            </p>
+          </div>
+          <button type="button" class="help-btn" id="btn-help-dimensionamiento" data-help-module="dimensionamiento" title="Guía de uso" aria-label="Guía de uso" hidden>
+            <span class="help-btn__icon" aria-hidden="true">?</span>
+            <span class="help-btn__label">Guía de uso</span>
+          </button>
+        </header>
+
+        <div class="instr-toolbar dim-toolbar">
+          <div class="org-scope-bar" data-org-scope="dimensionamiento">
+            <button type="button" class="org-scope-bar__btn" data-org-open="dimensionamiento">
+              <span class="org-scope-bar__lead">
+                <span class="org-scope-bar__title">Empresa y sede</span>
+                <span class="org-scope-bar__summary" id="dim-scope-summary">Seleccionar Empresa y Sede</span>
+              </span>
+              <span class="org-scope-bar__action">Cambiar</span>
+            </button>
+            <div class="org-scope-hidden">
+              <select id="dim-empresa" aria-label="Empresa"></select>
+              <select id="dim-sede" aria-label="Sede"></select>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" id="dim-load">Cargar sede</button>
+          <label class="instr-field" for="dim-anio">
+            <span>Año</span>
+            <input id="dim-anio" type="number" min="2000" max="2100" step="1" aria-label="Año activo" />
+          </label>
+          <button type="button" class="btn btn-ghost" id="dim-export-csv" hidden>Exportar CSV</button>
+          <button type="button" class="btn btn-ghost" id="dim-export-xlsx" hidden>Exportar XLSX</button>
+          <button type="button" class="btn btn-primary" id="dim-export-pdf" hidden>Generar informe PDF</button>
+        </div>
+        <p class="field-hint" id="dim-banner" hidden></p>
+        <p class="field-hint" id="dim-adquisicion-banner" hidden></p>
+        <p class="field-hint" id="dim-msg" hidden></p>
+
+        <div id="dim-content" class="dim-shell" hidden>
+          <section class="dim-acc" data-dim-section="params">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Parámetros generales</span>
+              </button>
+              <button type="button" class="tip" data-dim-tip="parametros" aria-label="Ayuda">?</button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <form id="dim-form-params" class="dim-params-grid">
+                <label>
+                  <span>Horas laborales/semana <button type="button" class="tip" data-dim-tip="horas_semana">?</button></span>
+                  <input type="number" step="0.1" min="0" name="horas_semana" data-dim-edit />
+                </label>
+                <label>
+                  <span>Semanas al año <button type="button" class="tip" data-dim-tip="semanas_anio">?</button></span>
+                  <input type="number" step="1" min="0" name="semanas_anio" data-dim-edit />
+                </label>
+                <label>
+                  <span>Vacaciones (h/año) <button type="button" class="tip" data-dim-tip="vacaciones_h">?</button></span>
+                  <input type="number" step="0.1" min="0" name="vacaciones_h" data-dim-edit />
+                </label>
+                <label>
+                  <span>Festivos (h/año) <button type="button" class="tip" data-dim-tip="festivos_h">?</button></span>
+                  <input type="number" step="0.1" min="0" name="festivos_h" data-dim-edit />
+                </label>
+                <label>
+                  <span>Permisos / reuniones / capac. (h/año) <button type="button" class="tip" data-dim-tip="permisos_h">?</button></span>
+                  <input type="number" step="0.1" min="0" name="permisos_h" data-dim-edit />
+                </label>
+                <label>
+                  <span>Productividad efectiva (0–1) <button type="button" class="tip" data-dim-tip="productividad">?</button></span>
+                  <input type="number" step="0.01" min="0" max="1" name="productividad" data-dim-edit />
+                </label>
+                <label>
+                  <span>Correctivo sin histórico (0–1) <button type="button" class="tip" data-dim-tip="correctivo_sin_historico">?</button></span>
+                  <input type="number" step="0.01" min="0" max="1" name="correctivo_sin_historico" data-dim-edit />
+                </label>
+                <label>
+                  <span>Contingencia general (0–1) <button type="button" class="tip" data-dim-tip="contingencia">?</button></span>
+                  <input type="number" step="0.01" min="0" max="1" name="contingencia" data-dim-edit />
+                </label>
+              </form>
+              <div class="dim-kpi-row">
+                <div class="dim-kpi">
+                  <span>Horas nominales <button type="button" class="tip" data-dim-tip="horas_nominales" aria-label="Ayuda">?</button></span>
+                  <strong id="dim-kpi-nominal">—</strong>
+                </div>
+                <div class="dim-kpi">
+                  <span>Horas disponibles <button type="button" class="tip" data-dim-tip="horas_disponibles" aria-label="Ayuda">?</button></span>
+                  <strong id="dim-kpi-disp">—</strong>
+                </div>
+                <div class="dim-kpi">
+                  <span>Horas efectivas / IC <button type="button" class="tip" data-dim-tip="horas_efectivas" aria-label="Ayuda">?</button></span>
+                  <strong id="dim-kpi-efec">—</strong>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary" id="dim-save-params" data-dim-edit>Guardar parámetros</button>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-dim-section="inventario">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Inventario y actividades por tipo de equipo</span>
+              </button>
+              <button type="button" class="tip" data-dim-tip="inventario" aria-label="Ayuda">?</button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <p class="field-hint">
+                Equipos agrupados por descripción. Si solo uno tiene MP/Cal/Val,
+                el cálculo usa esos datos para todas las unidades del grupo (sin guardarlos en los demás).
+                En cada actividad puede marcar <em>Servicio tercerizado</em> para excluir esa carga del personal interno; Freq/año y Tiempo pasan a 0.
+                Los parámetros ingresados se guardan por tipo de equipo; si ya existen, el sistema preguntará si desea cargarlos.
+              </p>
+              <div id="dim-equipos-list" class="dim-equipos"></div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-dim-section="correctivos">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Correctivos (histórico o estimados)</span>
+              </button>
+              <button type="button" class="tip" data-dim-tip="tiene_historico" aria-label="Ayuda">?</button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <p class="field-hint">
+                Las visitas cuentan como correctivo solo si hay duración verificable
+                (fecha de cierre − fecha de atención). Si el evento existe pero no tiene
+                esas fechas, se mantiene el parámetro institucional (15 % de las horas de MP).
+              </p>
+              <div class="suf-inv-controls">
+                <label class="suf-inv-search" for="dim-corr-search">
+                  <span class="inv-search__label">Buscar equipo</span>
+                  <input type="search" id="dim-corr-search" placeholder="Nombre o código…" autocomplete="off" />
+                </label>
+                <label class="suf-inv-page-size" for="dim-corr-page-size">
+                  <span class="inv-search__label">Mostrar</span>
+                  <select id="dim-corr-page-size" aria-label="Equipos por página en correctivos">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select>
+                </label>
+              </div>
+              <div class="dim-table-wrap">
+                <table class="dim-table" id="dim-table-correctivos">
+                  <thead>
+                    <tr>
+                      <th>Código</th><th>Equipo</th><th>¿Histórico?</th>
+                      <th>Fuente</th><th>MC / visitas</th>
+                      <th>Histórico (h)</th><th>Horas correctivo</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="suf-inv-pager" id="dim-corr-pager" hidden>
+                <span id="dim-corr-page-label"></span>
+                <button type="button" class="btn btn-ghost btn-sm" id="dim-corr-prev">Anterior</button>
+                <button type="button" class="btn btn-ghost btn-sm" id="dim-corr-next">Siguiente</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-dim-section="adicionales">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Actividades adicionales</span>
+              </button>
+              <button type="button" class="tip" data-dim-tip="gestion_documental" aria-label="Ayuda">?</button>
+              <button type="button" class="btn btn-primary btn-sm" id="dim-add-adicional" data-dim-adicional-edit hidden>
+                Agregar actividad
+              </button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <p class="field-hint">
+                Los equipos se agrupan por tipo (lote). No se muestra el código individual.
+                Las horas/año son el acumulado del lote.
+              </p>
+              <div class="suf-inv-controls">
+                <label class="suf-inv-search" for="dim-adic-search">
+                  <span class="inv-search__label">Buscar lote</span>
+                  <input type="search" id="dim-adic-search" placeholder="Nombre del equipo…" autocomplete="off" />
+                </label>
+                <label class="suf-inv-page-size" for="dim-adic-page-size">
+                  <span class="inv-search__label">Mostrar</span>
+                  <select id="dim-adic-page-size" aria-label="Lotes por página en actividades adicionales">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select>
+                </label>
+              </div>
+              <div class="dim-table-wrap">
+                <table class="dim-table" id="dim-table-adicionales">
+                  <thead>
+                    <tr>
+                      <th>Equipo</th>
+                      <th>Cantidad</th>
+                      <th>Gestión documental (h/año)</th>
+                      <th>Acompañamiento (h/año)</th>
+                      <th>Otras tareas (h/año)</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="suf-inv-pager" id="dim-adic-pager" hidden>
+                <span id="dim-adic-page-label"></span>
+                <button type="button" class="btn btn-ghost btn-sm" id="dim-adic-prev">Anterior</button>
+                <button type="button" class="btn btn-ghost btn-sm" id="dim-adic-next">Siguiente</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-dim-section="resumen">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Resumen de carga anual</span>
+              </button>
+              <button type="button" class="tip" data-dim-tip="resumen" aria-label="Ayuda">?</button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div id="dim-resumen" class="dim-resumen"></div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-dim-section="dashboard">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Dashboard operativo</span>
+              </button>
+              <button type="button" class="tip" data-dim-tip="dashboard" aria-label="Ayuda">?</button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div id="dim-dashboard" class="dim-dashboard"></div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-dim-section="informe">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Informe final exportable</span>
+              </button>
+              <button type="button" class="tip" data-dim-tip="informe" aria-label="Ayuda">?</button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div class="dim-informe-actions">
+                <button type="button" class="btn btn-primary" id="dim-informe-pdf">
+                  Generar informe PDF
+                </button>
+              </div>
+              <div id="dim-informe" class="dim-informe"></div>
+            </div>
+          </section>
+        </div>
+
+        <div class="tip-bubble" id="dim-tip-bubble" hidden role="tooltip"></div>
+      </div>
+
+      <div class="dash-panel" id="panel-frecuencia-pm" hidden>
+        <header class="panel-head">
+          <div class="panel-head__text">
+            <h2>Frecuencia de mantenimiento preventivo</h2>
+            <p class="subtitle">
+              Instrumento GE + fabricante (adaptación operativa). Calcula frecuencia definitiva, cronograma anual y validación asistencial.
+            </p>
+          </div>
+          <div class="panel-head__actions">
+            <button type="button" class="help-btn" id="btn-pm-catalogos" title="Catálogos GE / TGE" aria-label="Catálogos GE / TGE">
+              <span class="help-btn__icon" aria-hidden="true">+</span>
+              <span class="help-btn__label">Catálogos GE / TGE</span>
+            </button>
+            <button type="button" class="help-btn" id="btn-help-frecuencia-pm" data-help-module="frecuencia-pm" title="Guía de uso" aria-label="Guía de uso" hidden>
+              <span class="help-btn__icon" aria-hidden="true">?</span>
+              <span class="help-btn__label">Guía de uso</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="instr-toolbar">
+          <div class="org-scope-bar" data-org-scope="frecuencia-pm">
+            <button type="button" class="org-scope-bar__btn" data-org-open="frecuencia-pm">
+              <span class="org-scope-bar__lead">
+                <span class="org-scope-bar__title">Empresa, sede y servicio</span>
+                <span class="org-scope-bar__summary" id="pm-scope-summary">Seleccionar Empresa, Sede y Servicio</span>
+              </span>
+              <span class="org-scope-bar__action">Cambiar</span>
+            </button>
+            <div class="org-scope-hidden">
+              <select id="pm-empresa" aria-label="Empresa"></select>
+              <select id="pm-sede" aria-label="Sede"></select>
+              <select id="pm-servicio" aria-label="Servicio"></select>
+            </div>
+          </div>
+          <label class="instr-field" for="pm-anio">
+            <span>Año cronograma</span>
+            <input id="pm-anio" type="number" min="2000" max="2100" step="1" />
+          </label>
+          <div class="instr-toolbar__actions">
+            <button type="button" class="btn btn-ghost" id="pm-btn-refresh">Actualizar</button>
+            <button type="button" class="btn btn-primary" id="pm-btn-sync" data-pm-edit>Sincronizar inventario</button>
+            <button type="button" class="btn btn-ghost" id="pm-btn-recalc" data-pm-edit>Recalcular GE / cronograma</button>
+            <button type="button" class="btn btn-ghost" id="pm-btn-pdf-informe">PDF informe</button>
+            <button type="button" class="btn btn-ghost" id="pm-btn-pdf-crono">PDF cronograma</button>
+          </div>
+        </div>
+        <p class="field-hint" id="pm-banner" hidden></p>
+        <p class="field-hint" id="pm-msg" hidden></p>
+
+        <div class="pm-layout" id="pm-root">
+          <section class="dim-acc is-open" data-pm-section="inventario">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="true">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Inventario PM</span>
+              </button>
+              <button type="button" class="tip" data-pm-tip="guia" aria-label="Ayuda">?</button>
+            </div>
+            <div class="dim-acc__body">
+              <p class="suf-sheet-note">Equipos del servicio con frecuencia del fabricante y fecha del último PM.</p>
+              <div class="suf-inv-controls">
+                <label class="suf-inv-search" for="pm-inv-search">
+                  <span class="inv-search__label">Buscar equipo por nombre</span>
+                  <input
+                    type="search"
+                    id="pm-inv-search"
+                    placeholder="Nombre del equipo…"
+                    autocomplete="off"
+                    aria-label="Filtrar inventario PM por nombre de equipo"
+                  />
+                </label>
+                <label class="suf-inv-page-size" for="pm-inv-page-size">
+                  <span class="inv-search__label">Mostrar</span>
+                  <select id="pm-inv-page-size" aria-label="Equipos por página">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select>
+                </label>
+              </div>
+              <div class="suf-scroll suf-scroll-wide">
+                <table class="suf-grid" id="pm-tabla-inventario">
+                  <thead>
+                    <tr>
+                      <th>Código</th>
+                      <th>Equipo</th>
+                      <th>Estado</th>
+                      <th>PM fab. (meses) <button type="button" class="tip" data-pm-tip="pm_fabricante">?</button></th>
+                      <th>Función <button type="button" class="tip" data-pm-tip="funcion">?</button></th>
+                      <th>Aplicación <button type="button" class="tip" data-pm-tip="aplicacion">?</button></th>
+                      <th>Requisito <button type="button" class="tip" data-pm-tip="requisito">?</button></th>
+                      <th>Fallas <button type="button" class="tip" data-pm-tip="fallas">?</button></th>
+                      <th>Último PM <button type="button" class="tip" data-pm-tip="fecha_ultimo_pm">?</button></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="pm-inv-body"></tbody>
+                </table>
+              </div>
+              <div class="suf-inv-pager" id="pm-inv-pager" hidden>
+                <span id="pm-inv-page-label"></span>
+                <button type="button" class="btn btn-ghost btn-sm" id="pm-inv-prev">Anterior</button>
+                <button type="button" class="btn btn-ghost btn-sm" id="pm-inv-next">Siguiente</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-pm-section="ge">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Cálculo GE</span>
+              </button>
+              <button type="button" class="tip" data-pm-tip="ge" aria-label="Ayuda">?</button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div class="suf-scroll">
+                <table class="suf-grid" id="pm-tabla-ge">
+                  <thead>
+                    <tr>
+                      <th>Equipo</th><th>P. función</th><th>P. aplicación</th>
+                      <th>P. requisito</th><th>P. fallas</th>
+                      <th class="col-calc">GE</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pm-ge-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-pm-section="oms">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Intervalo TGE</span>
+              </button>
+              <button type="button" class="tip" data-pm-tip="oms" aria-label="Ayuda">?</button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div class="suf-scroll">
+                <table class="suf-grid">
+                  <thead>
+                    <tr><th>Equipo</th><th>GE</th><th>Intervalo TGE</th><th>Acción sugerida</th></tr>
+                  </thead>
+                  <tbody id="pm-oms-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-pm-section="definitiva">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Frecuencia definitiva</span>
+              </button>
+              <button type="button" class="tip" data-pm-tip="definitiva" aria-label="Ayuda">?</button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div class="suf-scroll">
+                <table class="suf-grid">
+                  <thead>
+                    <tr>
+                      <th>Equipo</th><th>PM fabricante</th><th>TGE</th>
+                      <th class="col-calc">Definitiva (TPM)</th>
+                      <th>Real (historial)</th>
+                      <th>MC / visitas</th>
+                      <th class="col-calc">Ajustada (Fdef)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pm-def-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-pm-section="ejecucion">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Ejecución de mantenimientos</span>
+              </button>
+              <button type="button" class="tip" data-pm-tip="ejecucion" aria-label="Ayuda">?</button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <p class="suf-sheet-note">
+                Llave oficial: Código Biomédica + Código de Activo. El módulo sigue operativo si el historial está incompleto.
+              </p>
+              <form id="pm-ejecucion-form" class="pm-ejecucion-form">
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="pm-ej-bio">Código Biomédica</label>
+                    <input id="pm-ej-bio" type="text" maxlength="100" autocomplete="off" required />
+                  </div>
+                  <div class="field">
+                    <label for="pm-ej-activo">Código de Activo</label>
+                    <input id="pm-ej-activo" type="text" maxlength="100" autocomplete="off" />
+                  </div>
+                  <div class="field">
+                    <label for="pm-ej-tipo">Tipo</label>
+                    <select id="pm-ej-tipo" required>
+                      <option value="preventivo">Preventivo</option>
+                      <option value="correctivo">Correctivo</option>
+                      <option value="visita">Visita</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="pm-ej-fecha">Fecha</label>
+                    <input id="pm-ej-fecha" type="date" required />
+                  </div>
+                  <div class="field">
+                    <label for="pm-ej-atencion">Fecha de atención</label>
+                    <input id="pm-ej-atencion" type="datetime-local" />
+                  </div>
+                  <div class="field">
+                    <label for="pm-ej-cierre">Fecha de cierre</label>
+                    <input id="pm-ej-cierre" type="datetime-local" />
+                  </div>
+                  <div class="field">
+                    <label for="pm-ej-duracion">Duración (h)</label>
+                    <input id="pm-ej-duracion" type="number" min="0" max="720" step="0.1" readonly tabindex="-1" />
+                    <small class="field-hint">cierre − atención. Sin ambas fechas no se asigna hora (se mantiene el 15 % de MP).</small>
+                  </div>
+                  <div class="field">
+                    <label for="pm-ej-obs">Observaciones</label>
+                    <input id="pm-ej-obs" type="text" maxlength="500" />
+                  </div>
+                </div>
+                <div class="actions" style="margin-top:0.6rem">
+                  <button type="submit" class="btn btn-primary btn-sm" data-pm-edit>Guardar ejecución</button>
+                  <button type="button" class="btn btn-ghost btn-sm" id="pm-ej-coincidencias">Buscar coincidencias</button>
+                </div>
+              </form>
+              <p class="field-hint" id="pm-ej-msg" hidden></p>
+              <div class="suf-inv-controls">
+                <label class="suf-inv-search" for="pm-ej-search">
+                  <span class="inv-search__label">Buscar por código</span>
+                  <input
+                    type="search"
+                    id="pm-ej-search"
+                    placeholder="Biomédica o activo…"
+                    autocomplete="off"
+                    aria-label="Filtrar ejecución por código"
+                  />
+                </label>
+                <label class="suf-inv-page-size" for="pm-ej-page-size">
+                  <span class="inv-search__label">Mostrar</span>
+                  <select id="pm-ej-page-size" aria-label="Filas por página en ejecución">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select>
+                </label>
+                <label class="suf-inv-page-size" for="pm-ej-tipo-filtro">
+                  <span class="inv-search__label">Tipo</span>
+                  <select id="pm-ej-tipo-filtro" aria-label="Filtrar tipo de ejecución">
+                    <option value="">Todos</option>
+                    <option value="preventivo">Preventivo</option>
+                    <option value="correctivo">Correctivo</option>
+                    <option value="visita">Visita</option>
+                  </select>
+                </label>
+              </div>
+              <div class="suf-scroll suf-scroll-wide">
+                <table class="suf-grid">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th><th>Tipo</th><th>Biomédica</th><th>Activo</th>
+                      <th>Sede / servicio</th><th>Duración</th><th>Fuente</th><th>Observaciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pm-ej-body"></tbody>
+                </table>
+              </div>
+              <div class="suf-inv-pager" id="pm-ej-pager" hidden>
+                <span id="pm-ej-page-label"></span>
+                <button type="button" class="btn btn-ghost btn-sm" id="pm-ej-prev">Anterior</button>
+                <button type="button" class="btn btn-ghost btn-sm" id="pm-ej-next">Siguiente</button>
+              </div>
+              <div id="pm-ej-match" class="pm-ej-match" hidden></div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-pm-section="cronograma">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Cronograma PM</span>
+              </button>
+              <button type="button" class="tip" data-pm-tip="cronograma" aria-label="Ayuda">?</button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div class="suf-inv-controls">
+                <label class="suf-inv-search" for="pm-crono-search">
+                  <span class="inv-search__label">Buscar equipo</span>
+                  <input
+                    type="search"
+                    id="pm-crono-search"
+                    placeholder="Nombre del equipo…"
+                    autocomplete="off"
+                    aria-label="Filtrar cronograma PM por equipo"
+                  />
+                </label>
+                <label class="suf-inv-page-size" for="pm-crono-page-size">
+                  <span class="inv-search__label">Mostrar</span>
+                  <select id="pm-crono-page-size" aria-label="Equipos por página en cronograma">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select>
+                </label>
+              </div>
+              <div class="suf-scroll suf-scroll-wide">
+                <table class="suf-grid" id="pm-tabla-crono">
+                  <thead>
+                    <tr>
+                      <th>Equipo</th><th>Último PM</th><th>Frecuencia</th>
+                      <th>Ene</th><th>Feb</th><th>Mar</th><th>Abr</th><th>May</th><th>Jun</th>
+                      <th>Jul</th><th>Ago</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dic</th>
+                      <th>Observación</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pm-crono-body"></tbody>
+                </table>
+              </div>
+              <div class="suf-inv-pager" id="pm-crono-pager" hidden>
+                <span id="pm-crono-page-label"></span>
+                <button type="button" class="btn btn-ghost btn-sm" id="pm-crono-prev">Anterior</button>
+                <button type="button" class="btn btn-ghost btn-sm" id="pm-crono-next">Siguiente</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-pm-section="dashboard">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Dashboard</span>
+              </button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div class="pm-kpi-row" id="pm-kpi-row"></div>
+              <div class="pm-charts" id="pm-charts"></div>
+              <div class="suf-scroll">
+                <table class="suf-grid">
+                  <thead>
+                    <tr><th>Equipo</th><th>Área</th><th>GE</th><th>Frecuencia</th><th>Acción</th></tr>
+                  </thead>
+                  <tbody id="pm-ejemplos-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-pm-section="informe">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Informe exportable</span>
+              </button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div id="pm-informe" class="dim-informe"></div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-pm-section="validacion">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Validación de cronograma</span>
+              </button>
+              <button type="button" class="tip" data-pm-tip="validacion" aria-label="Ayuda">?</button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div class="suf-inv-controls">
+                <label class="suf-inv-search" for="pm-val-search">
+                  <span class="inv-search__label">Buscar equipo</span>
+                  <input
+                    type="search"
+                    id="pm-val-search"
+                    placeholder="Nombre del equipo…"
+                    autocomplete="off"
+                    aria-label="Filtrar validación de cronograma por equipo"
+                  />
+                </label>
+                <label class="suf-inv-page-size" for="pm-val-page-size">
+                  <span class="inv-search__label">Mostrar</span>
+                  <select id="pm-val-page-size" aria-label="Filas por página en validación">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select>
+                </label>
+              </div>
+              <div class="suf-scroll suf-scroll-wide">
+                <table class="suf-grid">
+                  <thead>
+                    <tr>
+                      <th>Equipo</th><th>Mes</th><th>Programada</th><th>Ejecución</th>
+                      <th>Estado</th><th>Ejecutado por</th><th>Validado por</th>
+                      <th>Calificación</th><th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pm-val-body"></tbody>
+                </table>
+              </div>
+              <div class="suf-inv-pager" id="pm-val-pager" hidden>
+                <span id="pm-val-page-label"></span>
+                <button type="button" class="btn btn-ghost btn-sm" id="pm-val-prev">Anterior</button>
+                <button type="button" class="btn btn-ghost btn-sm" id="pm-val-next">Siguiente</button>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="tip-bubble" id="pm-tip-bubble" hidden role="tooltip"></div>
+      </div>
+
+      <div class="dash-panel" id="panel-preinstalacion" hidden>
+        <header class="panel-head">
+          <div class="panel-head__text">
+            <h2>Preinstalación de la tecnología biomédica</h2>
+            <p class="subtitle">
+              Instrumento SITIO: verifica en sitio si el área cumple las condiciones mínimas antes de aprobar la instalación.
+            </p>
+          </div>
+          <button type="button" class="help-btn" id="btn-help-preinstalacion" data-help-module="preinstalacion" title="Guía de uso" aria-label="Guía de uso" hidden>
+            <span class="help-btn__icon" aria-hidden="true">?</span>
+            <span class="help-btn__label">Guía de uso</span>
+          </button>
+        </header>
+
+        <div class="instr-toolbar">
+          <div class="org-scope-bar" data-org-scope="preinstalacion">
+            <button type="button" class="org-scope-bar__btn" data-org-open="preinstalacion">
+              <span class="org-scope-bar__lead">
+                <span class="org-scope-bar__title">Empresa, sede y servicio</span>
+                <span class="org-scope-bar__summary" id="pre-scope-summary">Seleccionar Empresa, Sede y Servicio</span>
+              </span>
+              <span class="org-scope-bar__action">Cambiar</span>
+            </button>
+            <div class="org-scope-hidden">
+              <select id="pre-empresa" aria-label="Empresa"></select>
+              <select id="pre-sede" aria-label="Sede"></select>
+              <select id="pre-servicio" aria-label="Servicio"></select>
+            </div>
+          </div>
+          <label class="instr-field" for="pre-equipo">
+            <span>Equipo de inventario</span>
+            <select id="pre-equipo" aria-label="Equipo de inventario">
+              <option value="">Seleccionar equipo</option>
+            </select>
+          </label>
+          <p class="field-hint" id="pre-equipo-alerta" hidden></p>
+          <div class="instr-toolbar__actions">
+            <button type="button" class="btn btn-ghost" id="pre-btn-refresh">Actualizar</button>
+            <button type="button" class="btn btn-primary" id="pre-btn-nueva" data-pre-edit>Nueva visita</button>
+            <button type="button" class="btn btn-ghost" id="pre-btn-pdf">PDF informe</button>
+          </div>
+        </div>
+        <p class="field-hint" id="pre-banner" hidden></p>
+        <p class="field-hint" id="pre-msg" hidden></p>
+
+        <div class="pre-layout" id="pre-root">
+          <div class="pre-main">
+            <nav class="pre-steps" id="pre-steps" aria-label="Pasos del instrumento">
+              <button type="button" class="pre-step is-active" data-pre-step="datos">1. Datos</button>
+              <button type="button" class="pre-step" data-pre-step="exigencias">2. Exigencias</button>
+              <button type="button" class="pre-step" data-pre-step="docs">3. Documentación</button>
+              <button type="button" class="pre-step" data-pre-step="resultado">4. Resultado</button>
+              <button type="button" class="pre-step" data-pre-step="informe">5. Informe</button>
+            </nav>
+
+            <section class="dim-acc is-open" data-pre-section="datos">
+              <div class="dim-acc__head">
+                <button type="button" class="dim-acc__toggle" aria-expanded="true">
+                  <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                  <span>Datos generales</span>
+                </button>
+                <button type="button" class="tip" data-pre-tip="institucion" aria-label="Ayuda">?</button>
+              </div>
+              <div class="dim-acc__body">
+                <div class="pre-integ" id="pre-integ" hidden></div>
+                <div class="pre-preset-bar">
+                  <label>
+                    Preset de fabricante
+                    <select id="pre-preset"></select>
+                  </label>
+                  <button type="button" class="btn btn-ghost" id="pre-btn-preset" data-pre-edit>Cargar preset</button>
+                  <button type="button" class="btn btn-ghost" id="pre-btn-save-preset" data-pre-edit>Guardar como preset</button>
+                </div>
+                <div class="pre-form" id="pre-form-datos"></div>
+                <div class="pre-evals" id="pre-evals"></div>
+              </div>
+            </section>
+
+            <section class="dim-acc" data-pre-section="exigencias">
+              <div class="dim-acc__head">
+                <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                  <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                  <span>Exigencias del fabricante</span>
+                </button>
+                <button type="button" class="tip" data-pre-tip="estado" aria-label="Ayuda">?</button>
+              </div>
+              <div class="dim-acc__body" hidden>
+                <div id="pre-exigencias" class="pre-cats"></div>
+              </div>
+            </section>
+
+            <section class="dim-acc" data-pre-section="docs">
+              <div class="dim-acc__head">
+                <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                  <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                  <span>Documentación obligatoria</span>
+                </button>
+                <button type="button" class="tip" data-pre-tip="evidencia" aria-label="Ayuda">?</button>
+              </div>
+              <div class="dim-acc__body" hidden>
+                <div id="pre-docs" class="pre-docs"></div>
+              </div>
+            </section>
+
+            <section class="dim-acc" data-pre-section="resultado">
+              <div class="dim-acc__head">
+                <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                  <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                  <span>Resultado de evaluación</span>
+                </button>
+                <button type="button" class="tip" data-pre-tip="decision" aria-label="Ayuda">?</button>
+              </div>
+              <div class="dim-acc__body" hidden>
+                <div id="pre-resultado"></div>
+              </div>
+            </section>
+
+            <section class="dim-acc" data-pre-section="informe">
+              <div class="dim-acc__head">
+                <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                  <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                  <span>Informe exportable</span>
+                </button>
+              </div>
+              <div class="dim-acc__body" hidden>
+                <div id="pre-informe"></div>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div class="tip-bubble" id="pre-tip-bubble" hidden role="tooltip"></div>
+      </div>
+
+      <div class="dash-panel" id="panel-kpis" hidden>
+        <header class="panel-head">
+          <div class="panel-head__text">
+            <h2>KPIs de ingeniería clínica</h2>
+            <p class="subtitle">
+              Instrumento gerencial de indicadores: parámetros, entrada mensual, KPIs, interpretación, dashboard y plan de decisiones.
+            </p>
+          </div>
+          <button type="button" class="help-btn" id="btn-help-kpis" data-help-module="kpis" title="Guía de uso" aria-label="Guía de uso" hidden>
+            <span class="help-btn__icon" aria-hidden="true">?</span>
+            <span class="help-btn__label">Guía de uso</span>
+          </button>
+        </header>
+
+        <div class="instr-toolbar dim-toolbar">
+          <div class="org-scope-bar" data-org-scope="kpis" id="kpi-empresa-wrap">
+            <button type="button" class="org-scope-bar__btn" data-org-open="kpis">
+              <span class="org-scope-bar__lead">
+                <span class="org-scope-bar__title">Empresa</span>
+                <span class="org-scope-bar__summary" id="kpi-scope-summary">Seleccionar Empresa</span>
+              </span>
+              <span class="org-scope-bar__action">Cambiar</span>
+            </button>
+            <div class="org-scope-hidden">
+              <select id="kpi-empresa" aria-label="Empresa"></select>
+            </div>
+          </div>
+          <label class="instr-field" for="kpi-anio">
+            <span>Año</span>
+            <input type="number" id="kpi-anio" min="2000" max="2100" step="1" aria-label="Año" />
+          </label>
+          <div class="instr-toolbar__actions">
+            <button type="button" class="btn btn-primary" id="kpi-btn-load">Cargar</button>
+            <button type="button" class="btn btn-ghost" id="kpi-btn-inventario">Aplicar inventario al mes</button>
+            <button type="button" class="btn btn-ghost" id="kpi-btn-xlsx">Informe Excel</button>
+          </div>
+        </div>
+        <p class="field-hint" id="kpi-banner" hidden></p>
+        <p class="field-hint" id="kpi-msg" hidden></p>
+
+        <div id="kpi-root" class="dim-shell" hidden>
+          <section class="dim-acc is-open" data-kpi-section="parametros">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="true">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Parámetros institucionales y metas</span>
+              </button>
+            </div>
+            <div class="dim-acc__body">
+              <form id="kpi-form-params" class="dim-params-grid"></form>
+              <h3 class="kpi-subhead">Metas por indicador</h3>
+              <div class="kpi-table-wrap">
+                <table class="dim-table" id="kpi-table-metas">
+                  <thead>
+                    <tr>
+                      <th>Tipo</th>
+                      <th>Indicador</th>
+                      <th>Unidad</th>
+                      <th>Meta</th>
+                      <th>Verde</th>
+                      <th>Amarillo</th>
+                      <th>Rojo</th>
+                      <th>Lectura gerencial</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <button type="button" class="btn btn-primary" id="kpi-btn-save-params" data-kpi-edit>Guardar parámetros</button>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-kpi-section="entrada">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Entrada mensual</span>
+              </button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <label class="field-inline">
+                <span>Mes</span>
+                <select id="kpi-mes" aria-label="Mes"></select>
+              </label>
+              <p class="field-hint" id="kpi-entrada-hint"></p>
+              <div id="kpi-entrada-groups"></div>
+              <div id="kpi-derived" class="dim-kpi-row"></div>
+              <button type="button" class="btn btn-primary" id="kpi-btn-save-mes" data-kpi-edit>Guardar mes</button>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-kpi-section="mensuales">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>KPIs mensuales</span>
+              </button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div class="kpi-table-wrap">
+                <table class="dim-table" id="kpi-table-mensuales"></table>
+              </div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-kpi-section="interpretacion">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Interpretación de KPIs</span>
+              </button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div class="kpi-table-wrap">
+                <table class="dim-table" id="kpi-table-interp">
+                  <thead>
+                    <tr>
+                      <th>Indicador</th>
+                      <th>Qué mide</th>
+                      <th>Si está bajo</th>
+                      <th>Si está alto</th>
+                      <th>Análisis recomendado</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-kpi-section="anual">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Análisis anual</span>
+              </button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div id="kpi-anual-kpis" class="dim-kpi-row"></div>
+              <div class="kpi-table-wrap">
+                <table class="dim-table" id="kpi-table-anual">
+                  <thead>
+                    <tr>
+                      <th>Tipo</th>
+                      <th>Indicador</th>
+                      <th>Resultado</th>
+                      <th>Meta</th>
+                      <th>Semáforo</th>
+                      <th>Prioridad</th>
+                      <th>Análisis</th>
+                      <th>Decisión</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-kpi-section="dashboard">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Dashboard gerencial</span>
+              </button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div id="kpi-dashboard-cards" class="dim-kpi-row"></div>
+              <div class="pm-charts" id="kpi-dashboard-charts"></div>
+              <p id="kpi-dashboard-resumen" class="kpi-exec"></p>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-kpi-section="decisiones">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Análisis de decisiones</span>
+              </button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div class="kpi-table-wrap">
+                <table class="dim-table" id="kpi-table-plan">
+                  <thead>
+                    <tr>
+                      <th>Indicador</th>
+                      <th>Semáforo</th>
+                      <th>Acción</th>
+                      <th>Responsable</th>
+                      <th>Plazo</th>
+                      <th>Estado</th>
+                      <th>Observaciones</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="dim-acc" data-kpi-section="informe">
+            <div class="dim-acc__head">
+              <button type="button" class="dim-acc__toggle" aria-expanded="false">
+                <span class="dim-acc__chevron" aria-hidden="true">▸</span>
+                <span>Informe de alta gerencia</span>
+              </button>
+            </div>
+            <div class="dim-acc__body" hidden>
+              <div id="kpi-informe"></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="dash-panel" id="panel-capex" hidden>
+        <header class="panel-head">
+          <h2>Instrumento CAPEX</h2>
+          <p class="subtitle">Evaluación de inversión de capital para renovación y ampliación tecnológica.</p>
+        </header>
+        <div class="module-placeholder">
+          <p class="eyebrow">Instrumento de análisis</p>
+          <h3>En construcción</h3>
+          <p>Aquí se integrará el instrumento CAPEX.</p>
+        </div>
+      </div>
+        </main>
+      </div>
+    </section>
+
+    <aside class="online-dock" id="online-dock" hidden>
+      <div class="online-dock__panel" id="online-dock-panel" hidden>
+        <p class="online-dock__hint">Solo consulta. Se actualiza cada 60 s.</p>
+        <ul class="online-dock__list" id="online-dock-list"></ul>
+      </div>
+      <button type="button" class="online-dock__toggle" id="online-dock-toggle" aria-expanded="false" aria-controls="online-dock-panel">
+        Usuarios conectados
+        <span class="online-dock__count" id="online-dock-count" hidden>0</span>
+      </button>
+    </aside>
+
+    <div class="modal" id="perfil-modal" hidden>
+      <div class="modal__backdrop" data-close-perfil-modal></div>
+      <div class="modal__dialog" role="dialog" aria-labelledby="perfil-modal-title" aria-modal="true">
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Cuenta</p>
+            <h2 id="perfil-modal-title">Configuración de perfil</h2>
+          </div>
+          <button type="button" class="icon-btn" data-close-perfil-modal aria-label="Cerrar">×</button>
+        </header>
+        <form id="perfil-form">
+          <p class="subtitle">Actualiza tus datos personales. El correo de acceso no se modifica aquí.</p>
+          <div class="privacy-notice" id="perfil-aviso">
+            <p class="privacy-notice__title">Protección de datos personales</p>
+            <p>El SIGTB no almacena historia clínica. Esta cuenta trata nombre, apellidos, correo, teléfono, cargo y rol.</p>
+            <p>La institución que opera la cuenta es la responsable del tratamiento. La finalidad es autenticar el acceso, aplicar permisos y dejar trazabilidad de la gestión del parque. Esos datos no se piden aquí para otra finalidad.</p>
+            <p>Puede conocerlos y actualizarlos en este perfil. La supresión de la cuenta la hace el administrador de la institución. Este aviso no sustituye la política de tratamiento de la sede ni el registro de la base de datos.</p>
+            <p class="field-hint" id="perfil-aviso-estado"></p>
+            <label class="privacy-check" id="perfil-aviso-check-wrap">
+              <input id="perfil-aviso-check" name="aviso_aceptado" type="checkbox" />
+              <span>Autorizo el tratamiento de mis datos personales para esa finalidad (Ley 1581 de 2012).</span>
+            </label>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="perfil-name">Nombres</label>
+              <input id="perfil-name" name="NAME_USER" type="text" required autocomplete="given-name" maxlength="80" />
+            </div>
+            <div class="field">
+              <label for="perfil-lastname">Apellidos</label>
+              <input id="perfil-lastname" name="LAST_NAME_USER" type="text" required autocomplete="family-name" maxlength="80" />
+            </div>
+            <div class="field">
+              <label for="perfil-email">Correo</label>
+              <input id="perfil-email" type="email" disabled />
+            </div>
+            <div class="field">
+              <label for="perfil-telefono">Número de contacto</label>
+              <input id="perfil-telefono" name="telefono" type="tel" inputmode="tel" placeholder="Ej. 3001234567" autocomplete="tel" maxlength="40" />
+            </div>
+            <div class="field">
+              <label for="perfil-password">Nueva contraseña</label>
+              <input id="perfil-password" name="password" type="password" autocomplete="new-password" placeholder="Dejar vacío para no cambiar" maxlength="128" />
+            </div>
+            <div class="field">
+              <label for="perfil-password2">Confirmar contraseña</label>
+              <input id="perfil-password2" type="password" autocomplete="new-password" placeholder="Repite la nueva contraseña" maxlength="128" />
+            </div>
+          </div>
+          <p class="form-msg" id="perfil-msg" hidden></p>
+          <div class="actions modal__actions">
+            <button type="button" class="btn btn-ghost" data-close-perfil-modal>Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal de registro -->
+    <div class="modal" id="register-modal" hidden>
+      <div class="modal__backdrop" data-close-modal></div>
+      <div
+        class="modal__dialog modal__dialog--scroll"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="register-title"
+      >
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Nuevo usuario</p>
+            <h2 id="register-title">Crear cuenta</h2>
+          </div>
+          <button type="button" class="icon-btn" data-close-modal aria-label="Cerrar">
+            ×
+          </button>
+        </header>
+
+        <form id="register-form" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <label for="reg-email">usuario_login (correo)</label>
+              <input
+                id="reg-email"
+                name="usuario_login"
+                type="email"
+                autocomplete="username"
+                placeholder="nombre@empresa.com"
+                required
+                maxlength="254"
+              />
+              <p class="field-error" data-error-for="reg-email" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="reg-password">PASSWORD</label>
+              <div class="password-field">
+                <input
+                  id="reg-password"
+                  name="password"
+                  type="password"
+                  autocomplete="new-password"
+                  placeholder="Mín. 8 caracteres"
+                  required
+                  maxlength="128"
+                  minlength="8"
+                />
+                <button
+                  type="button"
+                  class="password-toggle"
+                  data-password-toggle="reg-password"
+                  aria-pressed="false"
+                  aria-label="Mostrar contraseña"
+                >
+                  <span class="password-toggle__eye" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </span>
+                  <span class="password-toggle__eye-off" hidden aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.8 21.8 0 0 1 5.06-5.94M9.9 4.24A10.94 10.94 0 0 1 12 5c7 0 11 7 11 7a21.8 21.8 0 0 1-2.16 3.19M1 1l22 22M9.88 9.88a3 3 0 1 0 4.24 4.24"/></svg>
+                  </span>
+                </button>
+              </div>
+              <p class="field-error" data-error-for="reg-password" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="reg-name">NAME_USER</label>
+              <input
+                id="reg-name"
+                name="NAME_USER"
+                type="text"
+                autocomplete="given-name"
+                placeholder="Solo letras"
+                required
+                maxlength="80"
+              />
+              <p class="field-error" data-error-for="reg-name" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="reg-lastname">LAST_NAME_USER</label>
+              <input
+                id="reg-lastname"
+                name="LAST_NAME_USER"
+                type="text"
+                autocomplete="family-name"
+                placeholder="Solo letras"
+                required
+                maxlength="80"
+              />
+              <p class="field-error" data-error-for="reg-lastname" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="reg-roll">Rol</label>
+              <select id="reg-roll" name="ROLL" required>
+                <option value="" disabled selected>Selecciona un rol</option>
+              </select>
+              <p class="field-hint">Operador o Asistencial. El JOB lo asigna el administrador.</p>
+              <p class="field-error" data-error-for="reg-roll" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="reg-empresa">Empresa</label>
+              <select id="reg-empresa" name="empresa_id" required>
+                <option value="" disabled selected>Selecciona tu empresa</option>
+                <option value="__not_found__">No se encuentra</option>
+              </select>
+              <p class="field-hint">Si no aparece, elige «No se encuentra», ingresa Nombre y NIT y pulsa Cargar.</p>
+              <p class="field-error" data-error-for="reg-empresa" hidden></p>
+            </div>
+
+            <div class="field" id="reg-empresa-sugerida-wrap" hidden>
+              <label for="reg-empresa-sugerida">Nombre de la empresa</label>
+              <input id="reg-empresa-sugerida" name="empresa_sugerida" type="text" placeholder="Razón social" maxlength="255" />
+              <p class="field-error" data-error-for="reg-empresa-sugerida" hidden></p>
+            </div>
+
+            <div class="field" id="reg-nit-sugerido-wrap" hidden>
+              <label for="reg-nit-sugerido">NIT</label>
+              <input id="reg-nit-sugerido" name="nit_sugerido" type="text" placeholder="NIT" maxlength="50" />
+              <p class="field-error" data-error-for="reg-nit-sugerido" hidden></p>
+            </div>
+
+            <div class="field field--wide">
+              <div class="privacy-notice">
+                <p class="privacy-notice__title">Protección de datos personales</p>
+                <p>El SIGTB no almacena historia clínica. Esta cuenta trata nombre, apellidos, correo, teléfono, cargo y rol.</p>
+                <p>La institución que opera la cuenta es la responsable del tratamiento. La finalidad es autenticar el acceso, aplicar permisos y dejar trazabilidad de la gestión del parque. Esos datos no se piden aquí para otra finalidad.</p>
+                <p>Puede conocerlos y actualizarlos en el perfil. La supresión de la cuenta la hace el administrador de la institución. Este aviso no sustituye la política de tratamiento de la sede ni el registro de la base de datos.</p>
+                <label class="privacy-check">
+                  <input id="reg-aviso" name="aviso_aceptado" type="checkbox" />
+                  <span>Autorizo el tratamiento de mis datos personales para esa finalidad (Ley 1581 de 2012).</span>
+                </label>
+              </div>
+              <p class="field-error" data-error-for="reg-aviso" hidden></p>
+            </div>
+
+            <div class="field field--actions" id="reg-empresa-cargar-wrap" hidden>
+              <button type="button" class="btn btn-ghost" id="reg-empresa-cargar">Cargar</button>
+              <p class="field-hint" id="reg-empresa-cargar-hint">
+                Cargar no asigna la empresa. Envía una solicitud al administrador para crearla.
+              </p>
+            </div>
+          </div>
+
+          <div class="actions modal__actions">
+            <button type="button" class="btn btn-ghost" data-close-modal>Cancelar</button>
+            <button type="submit" class="btn btn-primary" id="register-submit">
+              Crear usuario
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Olvidé contraseña -->
+    <div class="modal" id="forgot-modal" hidden>
+      <div class="modal__backdrop" data-close-forgot-modal></div>
+      <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="forgot-title">
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Recuperación</p>
+            <h2 id="forgot-title">Olvidé contraseña</h2>
+          </div>
+          <button type="button" class="icon-btn" data-close-forgot-modal aria-label="Cerrar">×</button>
+        </header>
+        <form id="forgot-form" novalidate>
+          <p class="subtitle">
+            Te enviaremos un enlace al correo que usas como usuario_login para restablecer la contraseña.
+          </p>
+          <div class="field">
+            <label for="forgot-email">Correo</label>
+            <input id="forgot-email" name="usuario_login" type="email" autocomplete="username" required />
+            <p class="field-error" data-error-for="forgot-email" hidden></p>
+          </div>
+          <div class="actions modal__actions">
+            <button type="button" class="btn btn-ghost" data-close-forgot-modal>Cancelar</button>
+            <button type="submit" class="btn btn-primary">Enviar enlace</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Restablecer contraseña (enlace del correo) -->
+    <div class="modal" id="reset-modal" hidden>
+      <div class="modal__backdrop" data-close-reset-modal></div>
+      <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="reset-title">
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Recuperación</p>
+            <h2 id="reset-title">Nueva contraseña</h2>
+          </div>
+          <button type="button" class="icon-btn" data-close-reset-modal aria-label="Cerrar">×</button>
+        </header>
+        <form id="reset-form" novalidate>
+          <input type="hidden" id="reset-token" />
+          <div class="field">
+            <label for="reset-password">Nueva contraseña</label>
+            <input id="reset-password" name="password" type="password" autocomplete="new-password" required />
+            <p class="field-hint">Mínimo 8 caracteres.</p>
+            <p class="field-error" data-error-for="reset-password" hidden></p>
+          </div>
+          <div class="field">
+            <label for="reset-password2">Confirmar contraseña</label>
+            <input id="reset-password2" type="password" autocomplete="new-password" required />
+            <p class="field-error" data-error-for="reset-password2" hidden></p>
+          </div>
+          <div class="actions modal__actions">
+            <button type="button" class="btn btn-ghost" data-close-reset-modal>Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar contraseña</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal de edición (ADMIN) -->
+    <div class="modal" id="edit-modal" hidden>
+      <div class="modal__backdrop" data-close-edit-modal></div>
+      <div
+        class="modal__dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="edit-title"
+      >
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow" id="edit-eyebrow">Editar usuario</p>
+            <h2 id="edit-title">Modificar información</h2>
+          </div>
+          <button type="button" class="icon-btn" data-close-edit-modal aria-label="Cerrar">
+            ×
+          </button>
+        </header>
+
+        <form id="edit-form" novalidate>
+          <input type="hidden" id="edit-id" name="id_usuario" />
+          <div class="form-grid">
+            <div class="field">
+              <label for="edit-email">usuario_login (correo)</label>
+              <input id="edit-email" name="usuario_login" type="email" required />
+              <p class="field-error" data-error-for="edit-email" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="edit-password">PASSWORD (opcional)</label>
+              <div class="password-field">
+                <input
+                  id="edit-password"
+                  name="password"
+                  type="password"
+                  autocomplete="new-password"
+                  placeholder="Dejar vacío para no cambiar"
+                />
+                <button
+                  type="button"
+                  class="password-toggle"
+                  data-password-toggle="edit-password"
+                  aria-pressed="false"
+                  aria-label="Mostrar contraseña"
+                >
+                  <span class="password-toggle__eye" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </span>
+                  <span class="password-toggle__eye-off" hidden aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.8 21.8 0 0 1 5.06-5.94M9.9 4.24A10.94 10.94 0 0 1 12 5c7 0 11 7 11 7a21.8 21.8 0 0 1-2.16 3.19M1 1l22 22M9.88 9.88a3 3 0 1 0 4.24 4.24"/></svg>
+                  </span>
+                </button>
+              </div>
+              <p class="field-hint" id="edit-password-hint">Si la completas: mínimo 8 caracteres.</p>
+              <p class="field-error" data-error-for="edit-password" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="edit-name">NAME_USER</label>
+              <input id="edit-name" name="NAME_USER" type="text" required />
+              <p class="field-error" data-error-for="edit-name" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="edit-lastname">LAST_NAME_USER</label>
+              <input id="edit-lastname" name="LAST_NAME_USER" type="text" required />
+              <p class="field-error" data-error-for="edit-lastname" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="edit-roll">ROLL</label>
+              <select id="edit-roll" name="ROLL" required></select>
+              <p class="field-error" data-error-for="edit-roll" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="edit-job">JOB</label>
+              <select id="edit-job" name="JOB" required></select>
+              <p class="field-error" data-error-for="edit-job" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="edit-creation">creation_date</label>
+              <input
+                id="edit-creation"
+                name="creation_date"
+                type="text"
+                placeholder="YYYY-MM-DD HH:MM:SS"
+                required
+              />
+              <p class="field-error" data-error-for="edit-creation" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="edit-empresa">Empresa</label>
+              <select id="edit-empresa" name="empresa_id">
+                <option value="">Sin empresa</option>
+              </select>
+              <p class="field-hint" id="edit-empresa-hint">Obligatoria al crear, excepto si el ROLL es Administrador (no requiere empresa, sede ni servicio).</p>
+              <p class="field-error" data-error-for="edit-empresa" hidden></p>
+            </div>
+          </div>
+
+          <div class="actions modal__actions">
+            <button type="button" class="btn btn-ghost" data-close-edit-modal>Cancelar</button>
+            <button type="submit" class="btn btn-primary" id="edit-submit">
+              Guardar cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal detalle inventario (Módulo Dirección) -->
+    <div class="modal" id="direccion-inv-modal" hidden>
+      <div class="modal__backdrop" data-close-direccion-inv-modal></div>
+      <div
+        class="modal__dialog modal__dialog--wide"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="direccion-inv-title"
+      >
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Inventario del servicio</p>
+            <h2 id="direccion-inv-title">Detalle de equipos</h2>
+            <p class="field-hint" id="direccion-inv-subtitle"></p>
+          </div>
+          <button type="button" class="icon-btn" data-close-direccion-inv-modal aria-label="Cerrar">
+            ×
+          </button>
+        </header>
+        <div class="admin-table-wrap direccion-inv-table-wrap">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>#BIOMÉDICA</th>
+                <th>CÓDIGO DE ACTIVO</th>
+                <th>REGISTRO INVIMA</th>
+                <th>EQUIPO</th>
+                <th>MARCA</th>
+                <th>SERIE</th>
+                <th>MODELO</th>
+                <th>CLASIFICACIÓN RIESGO</th>
+                <th>UBICACIÓN</th>
+                <th>ESTADO</th>
+              </tr>
+            </thead>
+            <tbody id="direccion-inv-body"></tbody>
+          </table>
+        </div>
+        <div class="actions modal__actions">
+          <div id="direccion-inv-export" class="inventario-export-actions"></div>
+          <button type="button" class="btn btn-primary" data-close-direccion-inv-modal>Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal editar equipo biomédico -->
+    <div class="modal" id="equipo-modal" hidden>
+      <div class="modal__backdrop" data-close-equipo-modal></div>
+      <div
+        class="modal__dialog modal__dialog--wide"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="equipo-title"
+      >
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Inventario</p>
+            <h2 id="equipo-title">Editar equipo</h2>
+            <span id="equipo-alerta-slot"></span>
+          </div>
+          <button type="button" class="icon-btn" data-close-equipo-modal aria-label="Cerrar">
+            ×
+          </button>
+        </header>
+
+        <form id="equipo-form" novalidate>
+          <input type="hidden" id="equipo-id" />
+          <div class="form-grid">
+            <div class="field">
+              <label for="equipo-biomedica">#BIOMÉDICA</label>
+              <input id="equipo-biomedica" type="text" maxlength="100" />
+            </div>
+            <div class="field">
+              <label for="equipo-activo">CÓDIGO DE ACTIVO</label>
+              <input id="equipo-activo" type="text" maxlength="100" />
+            </div>
+            <div class="field">
+              <label for="equipo-invima">REGISTRO INVIMA</label>
+              <input id="equipo-invima" type="text" />
+            </div>
+            <div class="field">
+              <label for="equipo-nombre">EQUIPO</label>
+              <input id="equipo-nombre" type="text" required />
+            </div>
+            <div class="field">
+              <label for="equipo-marca">MARCA</label>
+              <input id="equipo-marca" type="text" />
+            </div>
+            <div class="field">
+              <label for="equipo-serie">SERIE</label>
+              <input id="equipo-serie" type="text" />
+            </div>
+            <div class="field">
+              <label for="equipo-modelo">MODELO</label>
+              <input id="equipo-modelo" type="text" />
+            </div>
+            <div class="field">
+              <label for="equipo-riesgo">CLASIFICACIÓN RIESGO</label>
+              <input id="equipo-riesgo" type="text" />
+            </div>
+            <div class="field">
+              <label for="equipo-ubicacion">UBICACIÓN</label>
+              <input id="equipo-ubicacion" type="text" />
+            </div>
+            <div class="field">
+              <label for="equipo-estado">ESTADO</label>
+              <select id="equipo-estado">
+                <option value="">Sin asignar</option>
+                <option value="OPERATIVO">OPERATIVO</option>
+                <option value="EN REPARACIÓN">EN REPARACIÓN</option>
+                <option value="FUERA DE SERVICIO">FUERA DE SERVICIO</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="equipo-std-params">
+            <h3>Parámetros estandarizados</h3>
+            <p class="field-hint">
+              MP, calibración y validación. En Dimensionamiento, si otros equipos tienen la
+              misma descripción sin datos propios, el cálculo reutilizará estos valores
+              solo en memoria (no se copian a la base de datos de los demás).
+            </p>
+            <div class="equipo-std-grid">
+              <fieldset>
+                <legend>Mantenimiento preventivo</legend>
+                <label for="equipo-aplica-mp">Aplica
+                  <select id="equipo-aplica-mp">
+                    <option value="">—</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                  </select>
+                </label>
+                <label for="equipo-freq-mp">Frecuencia / año
+                  <input id="equipo-freq-mp" type="number" min="0" step="0.1" />
+                </label>
+                <label for="equipo-tiempo-mp">Tiempo promedio (h)
+                  <input id="equipo-tiempo-mp" type="number" min="0" step="0.01" />
+                </label>
+              </fieldset>
+              <fieldset>
+                <legend>Calibración</legend>
+                <label for="equipo-aplica-cal">Aplica
+                  <select id="equipo-aplica-cal">
+                    <option value="">—</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                  </select>
+                </label>
+                <label for="equipo-freq-cal">Frecuencia / año
+                  <input id="equipo-freq-cal" type="number" min="0" step="0.1" />
+                </label>
+                <label for="equipo-tiempo-cal">Tiempo promedio (h)
+                  <input id="equipo-tiempo-cal" type="number" min="0" step="0.01" />
+                </label>
+              </fieldset>
+              <fieldset>
+                <legend>Validación / Control de calidad</legend>
+                <label for="equipo-aplica-val">Aplica
+                  <select id="equipo-aplica-val">
+                    <option value="">—</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                  </select>
+                </label>
+                <label for="equipo-freq-val">Frecuencia / año
+                  <input id="equipo-freq-val" type="number" min="0" step="0.1" />
+                </label>
+                <label for="equipo-tiempo-val">Tiempo promedio (h)
+                  <input id="equipo-tiempo-val" type="number" min="0" step="0.01" />
+                </label>
+              </fieldset>
+            </div>
+          </div>
+
+          <div class="equipo-std-params" id="equipo-extra-wrap" hidden>
+            <h3>Datos complementarios del inventario</h3>
+            <p class="field-hint">
+              Fechas, periodicidad y ficha eléctrica tomadas de la base institucional.
+              Alimentan frecuencia de PM, dimensionamiento y preinstalación.
+            </p>
+            <dl class="equipo-extra-grid" id="equipo-extra"></dl>
+          </div>
+
+          <div class="actions modal__actions">
+            <button type="button" class="btn btn-ghost" data-close-equipo-modal>Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar equipo</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal" id="inv-ejecucion-modal" hidden>
+      <div class="modal__backdrop" data-close-inv-ejecucion></div>
+      <div class="modal__dialog modal__dialog--wide" role="dialog" aria-modal="true" aria-labelledby="inv-ejecucion-title">
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Inventario</p>
+            <h2 id="inv-ejecucion-title">Historial de ejecución</h2>
+          </div>
+          <button type="button" class="icon-btn" data-close-inv-ejecucion aria-label="Cerrar">×</button>
+        </header>
+        <p class="field-hint" id="inv-ejecucion-equipo"></p>
+        <form id="inv-ejecucion-form" class="pm-ejecucion-form">
+          <input type="hidden" id="inv-ej-equipo-id" />
+          <div class="form-grid">
+            <div class="field">
+              <label for="inv-ej-tipo">Tipo</label>
+              <select id="inv-ej-tipo" required>
+                <option value="preventivo">Preventivo</option>
+                <option value="correctivo">Correctivo</option>
+                <option value="visita">Visita</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="inv-ej-fecha">Fecha</label>
+              <input id="inv-ej-fecha" type="date" required />
+            </div>
+            <div class="field">
+              <label for="inv-ej-atencion">Fecha de atención</label>
+              <input id="inv-ej-atencion" type="datetime-local" />
+            </div>
+            <div class="field">
+              <label for="inv-ej-cierre">Fecha de cierre</label>
+              <input id="inv-ej-cierre" type="datetime-local" />
+            </div>
+            <div class="field">
+              <label for="inv-ej-duracion">Duración (h)</label>
+              <input id="inv-ej-duracion" type="number" min="0" max="720" step="0.1" readonly tabindex="-1" />
+            </div>
+            <div class="field">
+              <label for="inv-ej-obs">Observaciones</label>
+              <input id="inv-ej-obs" type="text" maxlength="500" />
+            </div>
+          </div>
+          <div class="actions" style="margin-top:0.6rem">
+            <button type="submit" class="btn btn-primary btn-sm">Guardar ejecución</button>
+          </div>
+        </form>
+        <p class="field-hint" id="inv-ej-msg" hidden></p>
+        <div class="suf-scroll suf-scroll-wide" style="margin-top:0.8rem">
+          <table class="suf-grid">
+            <thead>
+              <tr>
+                <th>Fecha</th><th>Tipo</th><th>Duración</th><th>Fuente</th><th>Observaciones</th>
+              </tr>
+            </thead>
+            <tbody id="inv-ej-body"></tbody>
+          </table>
+        </div>
+        <div class="suf-inv-pager" id="inv-ej-pager" hidden>
+          <span id="inv-ej-page-label"></span>
+          <button type="button" class="btn btn-ghost btn-sm" id="inv-ej-prev">Anterior</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="inv-ej-next">Siguiente</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="dim-adicional-modal" hidden>
+      <div class="modal__backdrop" data-close-dim-adicional></div>
+      <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="dim-adicional-title">
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Dimensionamiento</p>
+            <h2 id="dim-adicional-title">Agregar actividad adicional</h2>
+          </div>
+          <button type="button" class="icon-btn" data-close-dim-adicional aria-label="Cerrar">×</button>
+        </header>
+        <form id="dim-adicional-form">
+          <input type="hidden" id="dim-adicional-grupo-key" />
+          <div class="field">
+            <label for="dim-adicional-lote">Lote de equipo</label>
+            <select id="dim-adicional-lote" required>
+              <option value="">Selecciona el tipo de equipo</option>
+            </select>
+            <p class="field-hint" id="dim-adicional-lote-hint"></p>
+          </div>
+          <div class="field">
+            <label for="dim-adicional-tipo">Tipo de actividad</label>
+            <select id="dim-adicional-tipo" required>
+              <option value="">Selecciona el tipo</option>
+              <option value="gestion_documental">Gestión documental</option>
+              <option value="acompanamiento">Acompañamiento</option>
+              <option value="otras_tareas">Otras tareas</option>
+            </select>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="dim-adicional-horas">Horas invertidas (por ocurrencia)</label>
+              <input id="dim-adicional-horas" type="number" min="0.01" step="0.01" required />
+            </div>
+            <div class="field">
+              <label for="dim-adicional-freq">Periodicidad anual</label>
+              <input id="dim-adicional-freq" type="number" min="0.01" step="any" required />
+            </div>
+          </div>
+          <p class="dim-adicional-preview" id="dim-adicional-preview">
+            Horas/año por equipo: — · Horas/año del lote: —
+          </p>
+          <div class="actions modal__actions">
+            <button type="button" class="btn btn-ghost" data-close-dim-adicional>Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar actividad</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    </div>
+
+    <div class="modal" id="fallos-modal" hidden>
+      <div class="modal__backdrop" data-close-fallos-modal></div>
+      <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="fallos-title">
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Soporte</p>
+            <h2 id="fallos-title">Reporte de fallos</h2>
+          </div>
+          <button type="button" class="icon-btn" data-close-fallos-modal aria-label="Cerrar">×</button>
+        </header>
+        <form id="fallos-form" novalidate>
+          <p class="field-hint" id="fallos-remitente-hint">
+            Se radicará como <strong>Invitado</strong> si no ha iniciado sesión.
+          </p>
+          <div class="field">
+            <label for="fallos-tipo">Tipo de falla</label>
+            <select id="fallos-tipo" required>
+              <option value="">Seleccione el tipo</option>
+              <option value="Funcional">Funcional</option>
+              <option value="Estructura">Estructura</option>
+              <option value="Diseño">Diseño</option>
+              <option value="Modulo">Modulo</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fallos-descripcion">Descripción de la novedad</label>
+            <textarea id="fallos-descripcion" rows="4" maxlength="2000" required placeholder="Explique la novedad detectada"></textarea>
+            <p class="field-hint">Entre 8 y 2000 caracteres.</p>
+          </div>
+          <div class="field">
+            <label for="fallos-solucion">Solución recomendada</label>
+            <textarea id="fallos-solucion" rows="3" maxlength="1000" placeholder="Indique una solución recomendada (opcional)"></textarea>
+            <p class="field-hint">Máximo 1000 caracteres.</p>
+          </div>
+          <p class="field-error" id="fallos-form-error" hidden></p>
+          <div class="actions modal__actions">
+            <button type="button" class="btn btn-ghost" data-close-fallos-modal>Cancelar</button>
+            <button type="submit" class="btn btn-primary">Radicar reporte</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal" id="org-scope-modal" hidden>
+      <div class="modal__backdrop" data-close-org-scope></div>
+      <div
+        class="modal__dialog org-scope-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="org-scope-title"
+      >
+        <header class="org-scope-dialog__head">
+          <h2 id="org-scope-title">Selecciona Empresa, Sede y Servicio</h2>
+          <p class="org-scope-dialog__sub">Por favor elige las opciones para continuar.</p>
+          <button type="button" class="icon-btn" data-close-org-scope aria-label="Cerrar">×</button>
+        </header>
+        <div class="org-scope-dialog__fields">
+          <label class="org-scope-field" id="org-scope-empresa-wrap">
+            <span>Empresa</span>
+            <span class="org-scope-field__box">
+              <span class="org-scope-field__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V8l8-4 8 4v12"/><path d="M9 20v-6h6v6"/></svg>
+              </span>
+              <select id="org-scope-empresa"></select>
+            </span>
+          </label>
+          <label class="org-scope-field" id="org-scope-sede-wrap">
+            <span>Sede</span>
+            <span class="org-scope-field__box">
+              <span class="org-scope-field__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.2"/></svg>
+              </span>
+              <select id="org-scope-sede"></select>
+            </span>
+          </label>
+          <label class="org-scope-field" id="org-scope-servicio-wrap">
+            <span>Servicio</span>
+            <span class="org-scope-field__box">
+              <span class="org-scope-field__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9c.3.6.9 1 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+              </span>
+              <select id="org-scope-servicio"></select>
+            </span>
+          </label>
+        </div>
+        <button type="button" class="btn btn-primary org-scope-dialog__cta" id="org-scope-continue">Continuar</button>
+      </div>
+    </div>
+
+    <div class="modal" id="pm-cumplir-modal" hidden>
+      <div class="modal__backdrop" data-close-pm-cumplir></div>
+      <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="pm-cumplir-title">
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Validación PM</p>
+            <h2 id="pm-cumplir-title">Registrar cumplimiento</h2>
+          </div>
+          <button type="button" class="icon-btn" data-close-pm-cumplir aria-label="Cerrar">×</button>
+        </header>
+        <p class="field-hint" id="pm-cumplir-equipo"></p>
+        <div class="field">
+          <label for="pm-cumplir-evidencia">Evidencia de cumplimiento</label>
+          <select id="pm-cumplir-evidencia" required></select>
+          <p class="field-hint">Elija la opción que coincida con los datos del inventario del equipo. No se escribe texto libre.</p>
+        </div>
+        <div class="actions modal__actions">
+          <button type="button" class="btn btn-ghost" data-close-pm-cumplir>Cancelar</button>
+          <button type="button" class="btn btn-primary" id="pm-cumplir-ok">Registrar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="pm-catalogos-modal" hidden>
+      <div class="modal__backdrop" data-close-pm-catalogos></div>
+      <div
+        class="modal__dialog modal__dialog--wide help-modal__dialog"
+        id="pm-catalogos-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="pm-catalogos-title"
+        tabindex="-1"
+      >
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Referencia</p>
+            <h2 id="pm-catalogos-title">Catálogos GE / TGE</h2>
+          </div>
+          <button type="button" class="icon-btn" data-close-pm-catalogos aria-label="Cerrar">×</button>
+        </header>
+        <p class="help-modal__overview">
+          Puntajes GE y bandas TGE usados para calcular la frecuencia de mantenimiento preventivo (adaptación operativa, no modelo WHO Pi).
+        </p>
+        <div class="help-modal__body">
+          <div id="pm-catalogos" class="pm-catalogos"></div>
+        </div>
+        <div class="actions modal__actions">
+          <button type="button" class="btn btn-primary" data-close-pm-catalogos>Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="help-modal" hidden>
+      <div class="modal__backdrop" data-close-help-modal></div>
+      <div
+        class="modal__dialog modal__dialog--wide help-modal__dialog"
+        id="help-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="help-modal-title"
+        aria-describedby="help-modal-overview"
+        tabindex="-1"
+      >
+        <header class="modal__header">
+          <div>
+            <p class="eyebrow">Guía rápida</p>
+            <h2 id="help-modal-title">Guía de uso</h2>
+          </div>
+          <button type="button" class="icon-btn" id="help-modal-close" data-close-help-modal aria-label="Cerrar">×</button>
+        </header>
+        <p class="help-modal__overview" id="help-modal-overview"></p>
+        <div class="help-modal__body" id="help-modal-body"></div>
+        <div class="actions modal__actions">
+          <button type="button" class="btn btn-primary" data-close-help-modal>Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/limits.js"></script>
+    <script src="/js/app.js?v=login-logout-clear" defer></script>
+    <script src="/js/org_scope.js" defer></script>
+    <script src="/js/charts.js" defer></script>
+    <script src="/js/help.js" defer></script>
+    <!-- Instrumentos especializados (se registran en AtlasOps tras app.js) -->
+    <script src="/js/suficiencia.js" defer></script>
+    <script src="/js/dimensionamiento.js" defer></script>
+    <script src="/js/frecuencia_pm.js" defer></script>
+    <script src="/js/preinstalacion.js" defer></script>
+    <script src="/js/adquisicion.js" defer></script>
+    <script src="/js/dimensionamiento_empresa.js" defer></script>
+    <script src="/js/kpis.js" defer></script>
+  </body>
+</html>

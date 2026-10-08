@@ -1,15 +1,21 @@
 # Anexos del TFM — SIGTB
 
-**Autor:** Jorge Felipe Blanco Medina, Máster Universitario en Ingeniería Biomédica (21MIBI), Universidad Internacional de Valencia, convocatoria octubre 2026.
+**Autor:** Jorge Felipe Blanco Medina, Máster Universitario en Ingeniería Biomédica (21MIBI), Universidad Internacional de Valencia, octubre 2026.
 
-**Título:** Diseño e implementación de un sistema integrado de gestión de tecnología biomédica (SIGTB), para la Clínica Santa Cruz de la Loma.
+**Título:** Diseño e implementación de un sistema integrado de gestión de tecnología biomédica (SIGTB), Clínica Santa Cruz de la Loma.
 
-Este PDF reúne anexos que acompañan al manuscrito depositado. Se comparte en este repositorio porque supera el límite de carga de 10 MB del aula virtual.
+Estos archivos acompañan al manuscrito depositado y se comparten aquí porque superan el límite de tamaño del aula virtual.
 
 ## Contenido
 
-- [Anexos_TFM_SIGTB_Documento2.pdf](Anexos_TFM_SIGTB_Documento2.pdf) — Documento 2, Anexos 5 a 7: autorizaciones y carta de FOSCAL, actas UAT y manual de uso.
+- [Anexo_02_Mapa_de_modulos.pdf](Anexo_02_Mapa_de_modulos.pdf) — Anexo 2, mapa de módulos.
+- [Anexo_03_Pantallas.pdf](Anexo_03_Pantallas.pdf) — Anexo 3, pantallas.
+- [Anexo_04_Alcance.pdf](Anexo_04_Alcance.pdf) — Anexo 4, alcance.
+- [Anexo_05_Autorizaciones_y_carta.pdf](Anexo_05_Autorizaciones_y_carta.pdf) — Anexo 5, autorizaciones y carta.
+- [Anexo_06_Actas_UAT.pdf](Anexo_06_Actas_UAT.pdf) — Anexo 6, actas UAT.
+- [Anexo_07_Manual_de_uso.pdf](Anexo_07_Manual_de_uso.pdf) — Anexo 7, manual de uso.
+- [Anexo_08_Codigo_SIGTB/](Anexo_08_Codigo_SIGTB/) — Anexo 8, código del piloto (solo lo necesario para entenderlo y ejecutarlo; las credenciales no están incluidas).
 
-La declaración de uso de IA forma parte del manuscrito depositado y no está en este repositorio.
+La declaración de uso de IA firmada está dentro del manuscrito depositado y no está en este repositorio.
 
-Los identificadores personales de las cartas y de las actas están redactados.
+Los identificadores de las cartas y de las actas están redactados.

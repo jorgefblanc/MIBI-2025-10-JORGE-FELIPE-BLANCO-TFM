@@ -1,0 +1,34 @@
+{
+  "module": "preinstalacion",
+  "version": "2026-08-28",
+  "title": "Guía rápida — Preinstalación (visita al sitio)",
+  "what": "Aquí compruebas si el área está lista para instalar un equipo: espacio, electricidad, gases y papeles. Es una visita real, no un cálculo en escritorio.",
+  "can_do": [
+    "Abrir una nueva visita o seguir una que ya empezaste",
+    "Marcar cada exigencia como cumple, no cumple o pendiente",
+    "Adjuntar fotos y documentos",
+    "Bajar el PDF de la visita"
+  ],
+  "steps": [
+    "Elige empresa, sede, servicio y el equipo, si ya está en inventario.",
+    "Pulsa Nueva visita (o abre una existente) y recorre Datos, Exigencias y Documentos.",
+    "Mira el resultado: si hay pendientes o un no cumple importante, el sitio aún no está listo. Luego baja el PDF."
+  ],
+  "common_errors": [
+    {"error": "No hay formulario", "fix": "Pulsa Nueva visita. Sin eso no hay evaluación."},
+    {"error": "La foto no carga", "fix": "Usa un archivo más liviano y no cierres la pestaña mientras sube."},
+    {"error": "No te deja marcar ítems", "fix": "No tienes permiso de edición. Escríbele al ADMIN."}
+  ],
+  "examples": [
+    {"type": "plantilla", "label": "Plantilla de ejemplo (Excel)", "href": "/api/help/preinstalacion/examples/plantilla.xlsx"},
+    {"type": "informe", "label": "Informe de ejemplo (PDF)", "href": "/api/help/preinstalacion/examples/ejemplo.pdf"}
+  ],
+  "images": ["preinstalacion_entrada.svg", "preinstalacion_analisis.svg"],
+  "tips": [
+    "Pendiente se trata como no listo para instalar.",
+    "Si algo estructural o eléctrico no cumple, deja una foto.",
+    "Este instrumento no evalúa capacitación del personal ni operación clínica.",
+    "«No aplica» no entra al porcentaje. Un crítico abierto deja No aprobado."
+  ],
+  "contact": "Si no ves tu sede o faltan personas, escríbele al ADMIN de tu organización."
+}
