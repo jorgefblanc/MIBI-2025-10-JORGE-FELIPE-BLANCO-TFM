@@ -15,6 +15,7 @@ Estos archivos acompañan al manuscrito depositado y se comparten aquí porque s
 - [Anexo_06_Actas_UAT.pdf](Anexo_06_Actas_UAT.pdf) — Anexo 6, actas UAT.
 - [Anexo_07_Manual_de_uso.pdf](Anexo_07_Manual_de_uso.pdf) — Anexo 7, manual de uso.
 - [Anexo_08_Codigo_SIGTB/](Anexo_08_Codigo_SIGTB/) — Anexo 8, código del piloto (solo lo necesario para entenderlo y ejecutarlo; las credenciales no están incluidas).
+- [Verificacion_42_casos/](Verificacion_42_casos/) — Material complementario de replicación (no es un anexo numerado): registro de verificación de 42 casos.
 
 La declaración de uso de IA firmada está dentro del manuscrito depositado y no está en este repositorio.
 

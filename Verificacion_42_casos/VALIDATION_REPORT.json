@@ -1,0 +1,977 @@
+{
+  "generated_at": "2026-09-14T00:24:06Z",
+  "total": 42,
+  "aprobadas": 42,
+  "fallidas": 0,
+  "criticas_fallidas": [],
+  "frontera_fallidas": [],
+  "casos": [
+    {
+      "id": "SUF-01",
+      "requisito": "Suficiencia mixto: D, Ceq, Rd, Rc, Rm, Rb, Rfinal, S, Alerta",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "modo": "mixto",
+        "H": 12,
+        "u": 0.75,
+        "t_h": 0.5,
+        "P": 40,
+        "Q": 4,
+        "Rm": 2,
+        "b": 0.2,
+        "D": 4
+      },
+      "esperado": {
+        "D": 4,
+        "Ceq": 18,
+        "Rd": 3,
+        "Rc": 4,
+        "Rm": 2,
+        "Rb": 4,
+        "Rfinal": 5,
+        "S": 0.8,
+        "resultado": "Alerta"
+      },
+      "obtenido": {
+        "D": 4,
+        "Ceq": 18.0,
+        "Rd": 3.0,
+        "Rc": 4.0,
+        "Rm": 2.0,
+        "Rb": 4.0,
+        "Rfinal": 5.0,
+        "S": 0.8,
+        "resultado": "Alerta"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "SUF-02",
+      "requisito": "Suficiencia frontera S=1 -> Suficiente",
+      "tipo": "frontera",
+      "critico": true,
+      "entradas": {
+        "modo": "minimo",
+        "Rm": 4,
+        "D": 4,
+        "b": 0
+      },
+      "esperado": {
+        "S": 1.0,
+        "resultado": "Suficiente"
+      },
+      "obtenido": {
+        "S": 1.0,
+        "resultado": "Suficiente"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "SUF-03",
+      "requisito": "Suficiencia S<0.80 -> Insuficiente",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "modo": "minimo",
+        "Rm": 10,
+        "D": 7,
+        "b": 0
+      },
+      "esperado": {
+        "S": 0.7,
+        "resultado": "Insuficiente"
+      },
+      "obtenido": {
+        "S": 0.7,
+        "resultado": "Insuficiente"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "SUF-04",
+      "requisito": "Suficiencia Rfinal=0 -> Revisar (sin división por cero)",
+      "tipo": "error",
+      "critico": true,
+      "entradas": {
+        "modo": "minimo",
+        "Rm": 0,
+        "D": 4
+      },
+      "esperado": {
+        "resultado": "Revisar",
+        "S": null
+      },
+      "obtenido": {
+        "resultado": "Revisar",
+        "S": null
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "SUF-05",
+      "requisito": "Suficiencia demanda sin H,u,t -> Revisar",
+      "tipo": "error",
+      "critico": true,
+      "entradas": {
+        "modo": "demanda",
+        "P": 40,
+        "H": null,
+        "t": null
+      },
+      "esperado": "Revisar",
+      "obtenido": "Revisar",
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "SUF-06",
+      "requisito": "Suficiencia t>H -> Revisar",
+      "tipo": "error",
+      "critico": true,
+      "entradas": {
+        "t": 20,
+        "H": 8,
+        "P": 10
+      },
+      "esperado": "Revisar",
+      "obtenido": "Revisar",
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "SUF-07",
+      "requisito": "Suficiencia modo demanda: Rb=Rd",
+      "tipo": "nominal",
+      "critico": false,
+      "entradas": {
+        "modo": "demanda",
+        "P": 40,
+        "H": 12,
+        "u": 0.75,
+        "t": 0.5,
+        "b": 0
+      },
+      "esperado": {
+        "Ceq": 18,
+        "Rd": 3,
+        "Rb": 3,
+        "Rfinal": 3,
+        "modo": "demanda"
+      },
+      "obtenido": {
+        "Ceq": 18.0,
+        "Rd": 3.0,
+        "Rb": 3.0,
+        "Rfinal": 3.0,
+        "modo": "demanda"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "SUF-08",
+      "requisito": "Suficiencia modo concurrencia: Rc=ceil(Q), Rb=Rc",
+      "tipo": "nominal",
+      "critico": false,
+      "entradas": {
+        "modo": "concurrencia",
+        "Q": 4,
+        "b": 0
+      },
+      "esperado": {
+        "Rc": 4,
+        "Rb": 4,
+        "Rfinal": 4,
+        "modo": "concurrencia"
+      },
+      "obtenido": {
+        "Rc": 4.0,
+        "Rb": 4.0,
+        "Rfinal": 4.0,
+        "modo": "concurrencia"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "SUF-09",
+      "requisito": "Suficiencia alias legado -> 4 modos TFM",
+      "tipo": "nominal",
+      "critico": false,
+      "entradas": {
+        "aliases": [
+          "por_demanda",
+          "por_capacidad",
+          "principal",
+          "minimo_tecnico",
+          "esterilizacion_rotacion"
+        ]
+      },
+      "esperado": {
+        "por_demanda": "demanda",
+        "por_capacidad": "concurrencia",
+        "principal": "concurrencia",
+        "minimo_tecnico": "minimo",
+        "esterilizacion_rotacion": "demanda"
+      },
+      "obtenido": {
+        "por_demanda": "demanda",
+        "por_capacidad": "concurrencia",
+        "principal": "concurrencia",
+        "minimo_tecnico": "minimo",
+        "esterilizacion_rotacion": "demanda"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "DIM-01",
+      "requisito": "Dimensionamiento excluye comodato/leasing/baja de Hparque y Nc",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "formas": [
+          "Compra directa",
+          "Comodato",
+          "BAJA"
+        ]
+      },
+      "esperado": {
+        "Hnom": 2184,
+        "internos": 1,
+        "tercerizados": 1,
+        "Hparque": 6.9,
+        "comodato_horas": 0.0,
+        "baja_dotacion": false,
+        "Nc_equipos": 1,
+        "fuera_plantilla": 1
+      },
+      "obtenido": {
+        "Hnom": 2184.0,
+        "internos": 1,
+        "tercerizados": 1,
+        "Hparque": 6.9,
+        "comodato_horas": 0.0,
+        "baja_dotacion": false,
+        "Nc_equipos": 1,
+        "fuera_plantilla": 1
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "DIM-02",
+      "requisito": "Leasing fuera de plantilla y Hparque=0",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "forma": "Leasing",
+        "cal_h": 3,
+        "mp_h": 8
+      },
+      "esperado": {
+        "en_plantilla": false,
+        "total_horas": 0.0
+      },
+      "obtenido": {
+        "en_plantilla": false,
+        "total_horas": 0.0
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "DIM-03",
+      "requisito": "Nh (carga) y Nc (criticidad) se calculan por funciones distintas",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "Hparque": 100,
+        "Hdisp": 2184,
+        "Ek_medio": 1,
+        "rk": 50
+      },
+      "esperado": {
+        "Nh": 1.0,
+        "Nc": 1.0,
+        "resumen_tiene_nc": false,
+        "ic_tiene_hdisp": false
+      },
+      "obtenido": {
+        "Nh": 1.0,
+        "Nc": 1.0,
+        "resumen_tiene_nc": false,
+        "ic_tiene_hdisp": false
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "DIM-04",
+      "requisito": "Nc=ceil(Σ Ek/rk) no suma de techos",
+      "tipo": "frontera",
+      "critico": true,
+      "entradas": {
+        "Bajo": 40,
+        "Medio": 30,
+        "Alto": 5,
+        "rk": [
+          70,
+          50,
+          20
+        ]
+      },
+      "esperado": {
+        "Nc": 2.0,
+        "suma_techos": 3.0
+      },
+      "obtenido": {
+        "Nc": 2.0,
+        "suma_techos": 3.0
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "DIM-05",
+      "requisito": "Hnom=42·52 y Hdisp=(Hnom)·p",
+      "tipo": "nominal",
+      "critico": false,
+      "entradas": {
+        "Hs": 42,
+        "semanas": 52,
+        "p": 0.8
+      },
+      "esperado": {
+        "Hnom": 2184.0,
+        "Hdisp": 1747.2
+      },
+      "obtenido": {
+        "Hnom": 2184.0,
+        "Hdisp": 1747.2
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "GE-01",
+      "requisito": "GE=F+A+M+Hf",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "F": 10,
+        "A": 5,
+        "M": 3,
+        "Hf": 2
+      },
+      "esperado": 20.0,
+      "obtenido": 20.0,
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "GE-02",
+      "requisito": "GE con componente faltante -> Revisar",
+      "tipo": "error",
+      "critico": true,
+      "entradas": {
+        "F": 10,
+        "A": 5,
+        "M": 3,
+        "Hf": null,
+        "Tfab": 6
+      },
+      "esperado": {
+        "GE": null,
+        "frecuencia": "Revisar"
+      },
+      "obtenido": {
+        "GE": null,
+        "frecuencia": "Revisar"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "GE-03",
+      "requisito": "Frontera GE 11 vs 12",
+      "tipo": "frontera",
+      "critico": true,
+      "entradas": {
+        "GE": [
+          11,
+          12
+        ]
+      },
+      "esperado": {
+        "tge_11": null,
+        "tge_12": 12,
+        "lab_11": "Correctivo bajo demanda",
+        "lab_12": "Anual"
+      },
+      "obtenido": {
+        "tge_11": null,
+        "tge_12": 12,
+        "lab_11": "Correctivo bajo demanda",
+        "lab_12": "Anual"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "GE-04",
+      "requisito": "Frontera GE 14 vs 15",
+      "tipo": "frontera",
+      "critico": true,
+      "entradas": {
+        "GE": [
+          14,
+          15
+        ]
+      },
+      "esperado": {
+        "tge_14": 12,
+        "tge_15": 6,
+        "lab_15": "Cada 6 meses"
+      },
+      "obtenido": {
+        "tge_14": 12,
+        "tge_15": 6,
+        "lab_15": "Cada 6 meses"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "GE-05",
+      "requisito": "Frontera GE 18 vs 19",
+      "tipo": "frontera",
+      "critico": true,
+      "entradas": {
+        "GE": [
+          18,
+          19
+        ]
+      },
+      "esperado": {
+        "tge_18": 6,
+        "tge_19": 4,
+        "lab_19": "Cada 4 meses"
+      },
+      "obtenido": {
+        "tge_18": 6,
+        "tge_19": 4,
+        "lab_19": "Cada 4 meses"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "GE-06",
+      "requisito": "GE≥12: TPM=min(TGE,Tfab)",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "GE": 20,
+        "TGE": 4,
+        "Tfab": [
+          6,
+          3
+        ]
+      },
+      "esperado": {
+        "vs6": "Cada 4 meses",
+        "vs3": "PM fabricante cada 3 meses"
+      },
+      "obtenido": {
+        "vs6": "Cada 4 meses",
+        "vs3": "PM fabricante cada 3 meses"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "GE-07",
+      "requisito": "GE<12: prevalece fabricante si hay Tfab",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "GE": 11,
+        "Tfab": 6
+      },
+      "esperado": "PM fabricante cada 6 meses",
+      "obtenido": "PM fabricante cada 6 meses",
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "PRE-01",
+      "requisito": "Csitio 89% -> No aprobado",
+      "tipo": "frontera",
+      "critico": true,
+      "entradas": {
+        "cumple": 89,
+        "no_cumple": 11
+      },
+      "esperado": {
+        "pct": 0.89,
+        "decision": "No aprobado para instalación"
+      },
+      "obtenido": {
+        "pct": 0.89,
+        "decision": "No aprobado para instalación"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "PRE-02",
+      "requisito": "Csitio 90% sin críticos incumplidos ni pendientes -> Aprobado",
+      "tipo": "frontera",
+      "critico": true,
+      "entradas": {
+        "cumple": 90,
+        "no_cumple_mayor": 10
+      },
+      "esperado": {
+        "pct": 0.9,
+        "criticos_incumplidos": 0,
+        "decision": "Aprobado para instalación"
+      },
+      "obtenido": {
+        "pct": 0.9,
+        "criticos_incumplidos": 0,
+        "decision": "Aprobado para instalación"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "PRE-03",
+      "requisito": "Csitio 100% -> Aprobado",
+      "tipo": "nominal",
+      "critico": false,
+      "entradas": {
+        "cumple": 100
+      },
+      "esperado": {
+        "pct": 1,
+        "decision": "Aprobado para instalación"
+      },
+      "obtenido": {
+        "pct": 1.0,
+        "decision": "Aprobado para instalación"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "PRE-04",
+      "requisito": "90% con pendientes (no crítico incumplido) -> Aprobado con condiciones",
+      "tipo": "frontera",
+      "critico": true,
+      "entradas": {
+        "cumple": 90,
+        "pendiente": 10
+      },
+      "esperado": "Aprobado con condiciones",
+      "obtenido": "Aprobado con condiciones",
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "PRE-05",
+      "requisito": "Crítico No cumple -> No aprobado aunque Csitio≥90",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "cumple": 90,
+        "critico_no_cumple": 1
+      },
+      "esperado": {
+        "criticos_incumplidos": 1,
+        "decision": "No aprobado para instalación"
+      },
+      "obtenido": {
+        "criticos_incumplidos": 1,
+        "decision": "No aprobado para instalación"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "PRE-06",
+      "requisito": "Σ ai=0 -> Revisar",
+      "tipo": "error",
+      "critico": true,
+      "entradas": {
+        "estado": "No aplica"
+      },
+      "esperado": {
+        "evaluables": 0,
+        "pct": null,
+        "decision": "Revisar"
+      },
+      "obtenido": {
+        "evaluables": 0,
+        "pct": null,
+        "decision": "Revisar"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "RBAC-01",
+      "requisito": "Técnico no abre instrumentos de ingeniería",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "ROLL": "OPERATIVO",
+        "JOB": "Técnico"
+      },
+      "esperado": {
+        "view_suficiencia": false,
+        "view_dimensionamiento": false,
+        "view_frecuencia_pm": false,
+        "view_preinstalacion": false
+      },
+      "obtenido": {
+        "view_suficiencia": false,
+        "view_dimensionamiento": false,
+        "view_frecuencia_pm": false,
+        "view_preinstalacion": false
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "RBAC-02",
+      "requisito": "Ingeniero ve instrumentos y no edita sedes sin overlay",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "ROLL": "OPERATIVO",
+        "JOB": "Ingeniero"
+      },
+      "esperado": {
+        "view_suficiencia": true,
+        "modify_sede": false,
+        "request_expanded_permissions": true
+      },
+      "obtenido": {
+        "view_suficiencia": true,
+        "modify_sede": false,
+        "request_expanded_permissions": true
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "RBAC-03",
+      "requisito": "JOB pendiente -> sin permisos",
+      "tipo": "error",
+      "critico": true,
+      "entradas": {
+        "ROLL": "OPERATIVO",
+        "JOB": ""
+      },
+      "esperado": 0,
+      "obtenido": 0,
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "RBAC-04",
+      "requisito": "ADMIN alcanza cualquier empresa",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "ROLL": "ADMIN",
+        "empresa_id": null,
+        "target": 99
+      },
+      "esperado": true,
+      "obtenido": true,
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "RBAC-05",
+      "requisito": "Operativo no cruza de empresa",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "empresa_id": 7,
+        "target_ok": 7,
+        "target_no": 8
+      },
+      "esperado": {
+        "misma": true,
+        "otra": false
+      },
+      "obtenido": {
+        "misma": true,
+        "otra": false
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "RBAC-06",
+      "requisito": "Matriz RBAC mapea jobs de instrumentos a permisos atómicos",
+      "tipo": "nominal",
+      "critico": false,
+      "entradas": {
+        "jobs": [
+          "Suficiencia de equipos",
+          "Dimensionamiento de personal",
+          "Frecuencia de mantenimiento preventivo",
+          "Preinstalación de la tecnología biomédica"
+        ]
+      },
+      "esperado": {
+        "Suficiencia de equipos": [
+          "view_suficiencia"
+        ],
+        "Dimensionamiento de personal": [
+          "view_dimensionamiento"
+        ],
+        "Frecuencia de mantenimiento preventivo": [
+          "view_frecuencia_pm"
+        ],
+        "Preinstalación de la tecnología biomédica": [
+          "view_preinstalacion"
+        ]
+      },
+      "obtenido": {
+        "Suficiencia de equipos": [
+          "view_suficiencia"
+        ],
+        "Dimensionamiento de personal": [
+          "view_dimensionamiento"
+        ],
+        "Frecuencia de mantenimiento preventivo": [
+          "view_frecuencia_pm"
+        ],
+        "Preinstalación de la tecnología biomédica": [
+          "view_preinstalacion"
+        ]
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "IMP-01",
+      "requisito": "Importación CSV con encabezados requeridos",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "archivo": "inventario.csv",
+        "filas": 1
+      },
+      "esperado": {
+        "error": null,
+        "n": 1,
+        "equipo": "Monitor"
+      },
+      "obtenido": {
+        "error": null,
+        "n": 1,
+        "equipo": "Monitor"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "IMP-02",
+      "requisito": "Importación XLSX rechazada (error controlado)",
+      "tipo": "error",
+      "critico": false,
+      "entradas": {
+        "archivo": "datos.xlsx"
+      },
+      "esperado": {
+        "rows": null,
+        "csv_en_error": true
+      },
+      "obtenido": {
+        "rows": null,
+        "csv_en_error": true
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "IMP-03",
+      "requisito": "CSV vacío -> error controlado",
+      "tipo": "error",
+      "critico": false,
+      "entradas": {
+        "archivo": "vacio.csv",
+        "bytes": 3
+      },
+      "esperado": {
+        "rows": null,
+        "vacio": true
+      },
+      "obtenido": {
+        "rows": null,
+        "vacio": true
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "EXP-01",
+      "requisito": "Exportación CSV incluye EQUIPO y mapea fila",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "equipo": "Bomba",
+        "aplica_mp": 1
+      },
+      "esperado": {
+        "tiene_equipo": true,
+        "valor": "Bomba"
+      },
+      "obtenido": {
+        "tiene_equipo": true,
+        "valor": "Bomba"
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "FLW-01",
+      "requisito": "Flujo principal: rutas del piloto registradas",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "rutas_exigidas": [
+          "/",
+          "/api/dimensionamiento/meta",
+          "/api/frecuencia-pm/meta",
+          "/api/preinstalacion/meta",
+          "/api/servicios/<int:servicio_id>/inventario/export.csv",
+          "/api/servicios/<int:servicio_id>/inventario/import",
+          "/api/suficiencia/meta"
+        ]
+      },
+      "esperado": [],
+      "obtenido": [],
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "FLW-02",
+      "requisito": "Catálogo de fórmulas TFM-1.0 persistible",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "modulos": [
+          "dimensionamiento",
+          "ge",
+          "preinstalacion",
+          "suficiencia"
+        ]
+      },
+      "esperado": {
+        "mods": [
+          "dimensionamiento",
+          "ge",
+          "preinstalacion",
+          "suficiencia"
+        ],
+        "versions": {
+          "dimensionamiento": "TFM-1.0",
+          "ge": "TFM-1.0",
+          "preinstalacion": "TFM-1.0",
+          "suficiencia": "TFM-1.0"
+        }
+      },
+      "obtenido": {
+        "mods": [
+          "dimensionamiento",
+          "ge",
+          "preinstalacion",
+          "suficiencia"
+        ],
+        "versions": {
+          "dimensionamiento": "TFM-1.0",
+          "ge": "TFM-1.0",
+          "preinstalacion": "TFM-1.0",
+          "suficiencia": "TFM-1.0"
+        }
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "FLW-03",
+      "requisito": "UI piloto expone paneles del flujo principal",
+      "tipo": "nominal",
+      "critico": false,
+      "entradas": {
+        "archivo": "public/index.html"
+      },
+      "esperado": {
+        "suficiencia": true,
+        "dimensionamiento": true,
+        "ge": true,
+        "preinstalacion": true,
+        "bandeja": true
+      },
+      "obtenido": {
+        "suficiencia": true,
+        "dimensionamiento": true,
+        "ge": true,
+        "preinstalacion": true,
+        "bandeja": true
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "BKP-01",
+      "requisito": "Respaldo SQLite y restauracion tras corrupcion",
+      "tipo": "nominal",
+      "critico": true,
+      "entradas": {
+        "copied": 4,
+        "corrupcion": "empresas.db"
+      },
+      "esperado": {
+        "ok": true,
+        "copied": 4,
+        "restored": true,
+        "valor": 5
+      },
+      "obtenido": {
+        "ok": true,
+        "copied": 4,
+        "restored": true,
+        "valor": 5
+      },
+      "conformidad": true,
+      "detalle": ""
+    },
+    {
+      "id": "BKP-02",
+      "requisito": "Restauracion rechaza path escape",
+      "tipo": "error",
+      "critico": true,
+      "entradas": {
+        "snapshot_id": "../secret"
+      },
+      "esperado": false,
+      "obtenido": false,
+      "conformidad": true,
+      "detalle": ""
+    }
+  ]
+}
